@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>Codefolio — Java Lab Report Studio</title>
+  <meta name="description" content="Create polished Java lab reports with code pages, text pages, cover upload, and PDF export. Everything runs in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --ink: #172033;
+      --muted: #788397;
+      --line: #e4e8ef;
+      --accent: #5965e8;
+      --accent-2: #7884ff;
+      --accent-soft: #eef0ff;
+      --navy: #101827;
+      --green: #16876a;
+      --shadow: 0 18px 50px rgba(22, 31, 52, .09);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'DM Sans', system-ui, sans-serif; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(89,101,232,.24); outline-offset: 2px; }
+    .app-shell { min-height: 100vh; }
+    .topbar { height: 72px; display:flex; align-items:center; justify-content:space-between; padding: 0 28px; background: rgba(255,255,255,.92); border-bottom: 1px solid var(--line); position: sticky; top:0; z-index:20; backdrop-filter: blur(16px); }
+    .brand { display:flex; align-items:center; gap:12px; min-width: 220px; }
+    .brand-mark { width: 36px; height:36px; display:grid; place-items:center; color:#fff; border-radius:11px; background: linear-gradient(145deg,#7985ff,#505ce0); box-shadow: 0 5px 13px rgba(89,101,232,.25); }
+    .brand-mark svg { width:21px; height:21px; }
+    .brand-name { font-weight:800; font-size:16px; letter-spacing:-.5px; line-height:1.1; }
+    .brand-sub { color:var(--muted); font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; margin-top:4px; }
+    .topbar-right { display:flex; align-items:center; gap:16px; }
+    .privacy { display:flex; align-items:center; gap:7px; color:#68758a; font-size:12px; }
+    .privacy .dot { width:7px;height:7px;border-radius:50%;background:#26ad82; box-shadow:0 0 0 3px #e1f7ef; }
+    .btn { border:1px solid transparent; border-radius:10px; padding:10px 14px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; font-size:12px; transition: .18s ease; white-space:nowrap; }
+    .btn svg { width:15px; height:15px; flex:none; }
+    .btn-primary { color:#fff; background:var(--accent); box-shadow:0 4px 10px rgba(89,101,232,.20); }
+    .btn-primary:hover { background:#4854d8; transform:translateY(-1px); }
+    .btn-secondary { color:#354055; background:#fff; border-color:var(--line); }
+    .btn-secondary:hover { background:#f8f9ff; border-color:#ccd1ff; }
+    .btn-quiet { color:#6d778a; background:transparent; border-color:transparent; }
+    .btn-quiet:hover { background:#f0f2f7; color:var(--ink); }
+    .btn-danger { color:#bd4053; background:#fff6f7; border-color:#ffe0e4; }
+    .layout { display:grid; grid-template-columns:248px minmax(340px, 1fr) minmax(345px, .95fr); gap:20px; padding:20px 22px 34px; max-width:1780px; margin:0 auto; align-items:start; }
+    .sidebar, .editor-card, .preview-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 3px 12px rgba(20,31,52,.025); }
+    .sidebar { position:sticky; top:91px; overflow:hidden; }
+    .sidebar-head { padding:21px 17px 13px; display:flex; align-items:center; justify-content:space-between; }
+    .eyebrow { font-size:10px; letter-spacing:1.3px; color:#8c96a8; font-weight:800; text-transform:uppercase; }
+    .icon-btn { border:1px solid var(--line); border-radius:9px; width:31px; height:31px; display:grid; place-items:center; background:#fff; color:#5e687d; }
+    .icon-btn:hover { background:var(--accent-soft); border-color:#d8dcff; color:var(--accent); }
+    .icon-btn svg { width:15px;height:15px; }
+    .pages-list { padding: 0 10px 14px; display:flex; flex-direction:column; gap:5px; }
+    .page-nav-item { width:100%; display:flex; align-items:center; text-align:left; gap:10px; padding:10px 9px; border:1px solid transparent; background:transparent; border-radius:11px; color:#586378; min-width:0; }
+    .page-nav-item:hover { background:#f8f9fc; }
+    .page-nav-item.active { background:var(--accent-soft); border-color:#dfe2ff; color:#3e49c6; }
+    .mini-page { flex:none; width:33px; height:42px; border:1px solid #dfe3ec; border-radius:5px; background:#fff; padding:6px 4px; display:flex; flex-direction:column; gap:3px; box-shadow:0 2px 4px rgba(0,0,0,.025); }
+    .mini-page.cover-mini { background:#121c30; border-color:#121c30; }
+    .mini-page span { display:block; height:2px; background:#dce1ec; border-radius:2px; }
+    .mini-page span:first-child { width:65%; background:#818bff; }
+    .mini-page.code-mini span:nth-child(2) { width:95%; background:#c6d1ff; }
+    .mini-page.code-mini span:nth-child(3) { width:72%; background:#a4edc4; }
+    .mini-page.text-mini span:nth-child(2) { width:85%; }
+    .mini-page.text-mini span:nth-child(3) { width:90%; }
+    .page-nav-label { min-width:0; flex:1; }
+    .page-nav-title { display:block; font-weight:700; font-size:12px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+    .page-nav-type { display:block; margin-top:4px; font-size:10px; color:#9aa3b3; }
+    .page-nav-item.active .page-nav-type { color:#7882de; }
+    .sidebar-divider { height:1px; background:var(--line); margin:0 16px; }
+    .sidebar-tools { padding:15px 15px 17px; }
+    .sidebar-tools .btn { width:100%; justify-content:flex-start; margin-top:8px; }
+    .sidebar-tip { margin:0 13px 14px; border-radius:11px; padding:12px; display:flex; gap:9px; background:#f8f9ff; border:1px solid #eaecff; color:#75809a; font-size:10px; line-height:1.5; }
+    .sidebar-tip svg { width:15px;height:15px;flex:none;color:#7884ef; }
+    .main-column { min-width:0; }
+    .welcome-row { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding:4px 2px 17px; }
+    .welcome-row h1 { margin:5px 0 0; font-size:23px; line-height:1.15; letter-spacing:-1px; }
+    .welcome-row p { margin:7px 0 0; color:var(--muted); font-size:12px; }
+    .page-counter { border:1px solid var(--line); border-radius:9px; padding:7px 10px; background:#fff; color:#7c879a; font-size:10px; font-weight:700; white-space:nowrap; }
+    .editor-card { padding:20px; }
+    .section-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
+    .section-top h2 { margin:0; font-size:14px; letter-spacing:-.25px; }
+    .section-top p { font-size:11px; color:var(--muted); margin:5px 0 0; }
+    .form-stack { display:flex; flex-direction:column; gap:16px; }
+    .field { display:flex; flex-direction:column; gap:7px; min-width:0; }
+    .field label { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#626e82; font-size:11px; font-weight:700; }
+    .field label .optional { color:#a4adbb; font-size:10px; font-weight:500; }
+    .field input, .field textarea, .field select { color:#253148; width:100%; border:1px solid #e0e5ee; background:#fff; border-radius:9px; padding:11px 12px; font-size:12px; transition:border .15s ease, box-shadow .15s ease; outline:none; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color:#9aa3ff; box-shadow:0 0 0 3px rgba(89,101,232,.09); }
+    .field input::placeholder, .field textarea::placeholder { color:#b0b8c6; }
+    .field textarea { resize:vertical; min-height:86px; line-height:1.55; }
+    .field textarea.code-input { min-height:285px; color:#dae4fb; border-color:#1b2941; border-radius:10px; background:#111b2b; padding:15px; font:11px/1.68 'DM Mono', monospace; tab-size:4; white-space:pre; overflow:auto; }
+    .field textarea.body-input { min-height:120px; }
+    .field input.mono { font-family:'DM Mono',monospace; }
+    .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .editor-divider { height:1px; background:#edf0f5; margin:2px 0 0; }
+    .upload-zone { border:1.5px dashed #cbd2e2; border-radius:13px; padding:19px 15px; text-align:center; background:#fafbfe; transition:.18s ease; }
+    .upload-zone.dragover { border-color:var(--accent); background:#f0f1ff; }
+    .upload-icon { width:40px;height:40px;border-radius:13px;background:#eceeff;color:#6874ea;display:grid;place-items:center;margin:0 auto 10px; }
+    .upload-icon svg { width:20px;height:20px; }
+    .upload-zone strong { display:block;font-size:12px; }
+    .upload-zone p { margin:5px 0 11px;color:#929caf;font-size:10px; }
+    .upload-zone .btn { font-size:11px;padding:8px 12px; }
+    .cover-status { font-size:10px; color:#7b8596; margin-top:10px; line-height:1.5; }
+    .hidden { display:none !important; }
+    .preview-column { min-width:0; position:sticky; top:91px; }
+    .preview-card { overflow:hidden; }
+    .preview-toolbar { display:flex; align-items:center; justify-content:space-between; padding:16px 16px 13px; }
+    .preview-toolbar h2 { margin:0; font-size:12px; }
+    .preview-subtitle { color:#9aa3b3; font-size:10px; margin-top:4px; }
+    .paper-stage { padding:16px 16px 20px; background:#eef1f6; border-top:1px solid #f0f2f6; display:flex; justify-content:center; }
+    .paper { width:100%; max-width:430px; min-height:560px; aspect-ratio:210 / 297; background:#fff; padding:8.2% 8%; box-shadow:0 6px 22px rgba(26,37,59,.12); position:relative; overflow:hidden; color:#172033; }
+    .paper-content { min-height:100%; display:flex; flex-direction:column; position:relative; z-index:1; }
+    .paper-kicker { color:#838da2; font-size:6px; letter-spacing:1.15px; font-weight:800; text-transform:uppercase; }
+    .paper-filebar { background:#111b2b; color:#f4f7ff; min-height:25px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 9px; margin-bottom:22px; border-radius:4px; }
+    .paper-filebar .file { font:7px 'DM Mono',monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .paper-filebar .tag { color:#9eaef9; font:6px 'DM Mono',monospace; flex:none; }
+    .paper h3 { color:#182237; font-size:18px; line-height:1.2; letter-spacing:-.5px; margin:0 0 9px; overflow-wrap:anywhere; }
+    .paper .paper-intro { font-size:7px; line-height:1.65; color:#637087; white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 14px; }
+    .paper-code { margin:0; padding:11px 9px; border-radius:5px; background:#111b2b; color:#e5ecfa; font:6.1px/1.65 'DM Mono',monospace; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; overflow:hidden; max-height:none; }
+    .paper-code .ln { color:#64728b; display:inline-block; width:18px; user-select:none; }
+    .tok-key { color:#91b7ff; }
+    .tok-string { color:#a7e5b9; }
+    .tok-comment { color:#8494aa; font-style:italic; }
+    .tok-number { color:#f2c77d; }
+    .paper-note { margin-top:15px; border-left:2px solid #7b84f3; padding:4px 0 4px 8px; color:#67738a; font-size:7px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .paper-footer { margin-top:auto; padding-top:15px; color:#b2bac8; display:flex; justify-content:space-between; gap:6px; font:5.5px 'DM Mono',monospace; }
+    .paper-rule { height:1px; background:#e7eaf0; margin:0 0 18px; }
+    .paper-text-body { font-size:8px; line-height:1.8; color:#4d5b70; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .cover-preview { margin:-8.2% -8.7%; width:calc(100% + 17.4%); min-height:560px; aspect-ratio:210 / 297; background:#101827; color:white; position:relative; padding:12%; overflow:hidden; }
+    .cover-preview:before { content:''; position:absolute; width:210px;height:210px;border:1px solid rgba(151,164,255,.22);border-radius:50%;right:-105px;top:45px;box-shadow:0 0 0 25px rgba(151,164,255,.04),0 0 0 52px rgba(151,164,255,.035); }
+    .cover-preview:after { content:''; position:absolute; width:180px;height:180px;background:linear-gradient(135deg,#6875ff,#7fd9f8);opacity:.14;filter:blur(3px);border-radius:35%;right:-86px;bottom:-80px;transform:rotate(27deg); }
+    .cover-preview .cover-brand { display:flex;align-items:center;gap:7px;font-size:6px;letter-spacing:1.1px;color:#bbc5df;font-weight:800;text-transform:uppercase;position:relative;z-index:1; }
+    .cover-brand-mark { display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:#6875ff;color:white;font-size:11px; }
+    .cover-overline { position:relative;z-index:1;margin-top:22%;font-size:7px;letter-spacing:1.5px;font-weight:700;color:#8fa0ff;text-transform:uppercase; }
+    .cover-preview h3 { color:white;font-size:24px;line-height:1.06;letter-spacing:-1px;margin:10px 0 12px;position:relative;z-index:1;max-width:100%; }
+    .cover-preview .cover-sub { color:#b1bdd5;font-size:8px;line-height:1.6;position:relative;z-index:1;white-space:pre-wrap; }
+    .cover-preview .cover-line { width:40px;height:3px;background:#7b88ff;margin:20px 0;position:relative;z-index:1; }
+    .cover-preview .cover-meta { position:absolute;left:12%;right:12%;bottom:12%;padding-top:13px;border-top:1px solid rgba(207,219,255,.2);display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;z-index:1; }
+    .cover-meta span { display:block;color:#8290ad;font-size:5px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px; }
+    .cover-meta strong { display:block;color:#edf1ff;font-size:7px;line-height:1.4;font-weight:600;overflow-wrap:anywhere; }
+    .cover-image-preview { width:100%; height:100%; object-fit:contain; position:absolute; inset:0; background:white; }
+    .cover-img-label { position:absolute;bottom:8px;left:8px;background:rgba(17,24,39,.78);color:#fff;padding:5px 7px;border-radius:5px;font-size:9px;z-index:3; }
+    .preview-foot { display:flex;justify-content:space-between;align-items:center;padding:10px 16px 14px;font-size:10px;color:#98a1b1;gap:10px; }
+    .preview-foot .status { display:flex;align-items:center;gap:6px; }
+    .preview-foot .status:before { content:'';width:6px;height:6px;border-radius:50%;background:#27ad83; }
+    .toast { position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#172033;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);font-size:12px;z-index:99;transition:.2s ease;max-width:calc(100vw - 32px); }
+    .toast.show { opacity:1;transform:translate(-50%,0); }
+    .exporting { opacity:.6; pointer-events:none; }
+    .small-note { font-size:10px;color:#9aa4b4;line-height:1.55; }
+    .cover-edit-title { display:flex;align-items:center;justify-content:space-between;gap:10px; }
+    .cover-edit-title .btn { padding:7px 9px;font-size:10px; }
+    @media (max-width: 1250px) {
+      .layout { grid-template-columns:220px minmax(320px,1fr); }
+      .preview-column { position:static; grid-column:2; }
+      .preview-card { display:grid;grid-template-columns:minmax(0,1fr); }
+      .paper-stage { padding:18px; }
+      .paper { max-width:500px; }
+    }
+    @media (max-width: 760px) {
+      .topbar { height:64px;padding:0 14px; }
+      .brand { min-width:0; }
+      .brand-sub { display:none; }
+      .topbar-right { gap:8px; }
+      .privacy { display:none; }
+      .btn { padding:9px 10px; }
+      .layout { display:flex;flex-direction:column;padding:12px;gap:13px; }
+      .sidebar,.main-column,.preview-column { width:100%;position:static; }
+      .sidebar { order:0; }
+      .sidebar-head { padding:13px 14px 9px; }
+      .pages-list { flex-direction:row;overflow-x:auto;padding:0 11px 12px; }
+      .page-nav-item { min-width:155px;width:155px; }
+      .sidebar-divider,.sidebar-tip { display:none; }
+      .sidebar-tools { display:flex;gap:8px;padding:0 12px 13px; }
+      .sidebar-tools .btn { margin:0;justify-content:center; }
+      .welcome-row { align-items:center;padding:3px 2px 12px; }
+      .welcome-row h1 {font-size:21px;}
+      .editor-card { padding:15px; }
+      .preview-column { order:2; }
+      .paper-stage { padding:14px; }
+      .paper { max-width:420px; }
+    }
+    .print-report { display:none; }
+    @media print {
+      @page { size:A4 portrait; margin:0; }
+      body { background:white; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .app-shell,.toast { display:none !important; }
+      .print-report { display:block !important; }
+      .print-sheet { width:210mm; min-height:297mm; padding:17mm; page-break-after:always; break-after:page; position:relative; color:#172033; background:#fff; overflow:visible; }
+      .print-sheet:last-child { page-break-after:auto; break-after:auto; }
+      .print-cover { min-height:297mm; margin:-17mm; padding:24mm 22mm; background:#101827; color:#fff; position:relative; }
+      .print-cover h1 { font-size:30pt;line-height:1.1;max-width:155mm;margin:24mm 0 7mm; }
+      .print-cover .print-cover-sub { color:#bec8df;font-size:11pt;white-space:pre-wrap; }
+      .print-meta-grid { display:grid;grid-template-columns:1fr 1fr;gap:11mm 10mm;margin-top:28mm;padding-top:9mm;border-top:1px solid #526078; }
+      .print-meta-grid span { display:block;color:#a7b4cc;font-size:8pt;text-transform:uppercase;letter-spacing:.8pt;margin-bottom:3mm; }
+      .print-meta-grid strong { font-size:10pt;font-weight:500;overflow-wrap:anywhere; }
+      .print-cover-img { width:100%;height:263mm;object-fit:contain;display:block; }
+      .print-filebar { background:#111b2b;color:#f4f7ff;padding:4mm 5mm;font:9pt 'DM Mono',monospace;margin-bottom:8mm; }
+      .print-sheet h2 { font-size:22pt;line-height:1.2;margin:0 0 5mm; }
+      .print-intro { font-size:10pt;line-height:1.6;color:#58657b;white-space:pre-wrap;margin:0 0 7mm; }
+      .print-code { background:#111b2b;color:#e5ecfa;border-radius:2mm;padding:5mm;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:7.5pt/1.55 'DM Mono',monospace; }
+      .print-notes { margin-top:8mm;padding:4mm 0 4mm 4mm;border-left:2px solid #727df1;color:#536078;font-size:9pt;line-height:1.6;white-space:pre-wrap; }
+      .print-text-body { white-space:pre-wrap;font-size:11pt;line-height:1.8;color:#4d5b70;overflow-wrap:anywhere; }
+      .print-kicker { color:#7b879d;text-transform:uppercase;letter-spacing:1pt;font-size:8pt;font-weight:bold;margin-bottom:9mm; }
+      .print-footer { position:absolute;left:17mm;right:17mm;bottom:9mm;border-top:1px solid #e5e9f0;padding-top:3mm;display:flex;justify-content:space-between;color:#9aa4b5;font-size:7pt; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 5 2.5 12 7 19M17 5l4.5 7-4.5 7M14.3 3.5 9.7 20.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><div class="brand-name">Codefolio</div><div class="brand-sub">Java Lab Report Studio</div></div>
+    </div>
+    <div class="topbar-right">
+      <div class="privacy"><span class="dot"></span><span>Saved in this browser</span></div>
+      <button class="btn btn-primary" id="exportBtn" type="button"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Export PDF</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" aria-label="Report pages">
+      <div class="sidebar-head"><div class="eyebrow">Document pages</div><button class="icon-btn" id="addCodeTop" title="Add code page" aria-label="Add code page"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button></div>
+      <div id="pagesList" class="pages-list"></div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-tools">
+        <button class="btn btn-secondary" id="addCodeBtn" type="button"><svg viewBox="0 0 24 24" fill="none"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-2-11-4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> New code page</button>
+        <button class="btn btn-secondary" id="addTextBtn" type="button"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14M5 10h14M5 15h9M5 20h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> New text page</button>
+      </div>
+      <div class="sidebar-tip"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a7 7 0 0 0-4 12.75c.65.46 1 1.05 1 1.75h6c0-.7.35-1.29 1-1.75A7 7 0 0 0 12 3ZM9 21h6M10 18h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tip: Add a separate text page for your algorithm, discussion, or conclusion.</span></div>
+    </aside>
+
+    <section class="main-column">
+      <div class="welcome-row">
+        <div><div class="eyebrow">Your workspace</div><h1>Build your report<span style="color:var(--accent)">.</span></h1><p>Write code. Add context. Export a clean PDF.</p></div>
+        <div class="page-counter" id="pageCounter">PAGE 1 OF 2</div>
+      </div>
+      <div class="editor-card" id="editorCard">
+        <div class="section-top">
+          <div><h2 id="editorTitle">Cover page</h2><p id="editorSubtitle">Set up the details of your lab report.</p></div>
+          <div style="display:flex;gap:5px;align-items:center" id="pageActions"></div>
+        </div>
+        <div id="editorContent" class="form-stack"></div>
+      </div>
+    </section>
+
+    <aside class="preview-column" aria-label="Live document preview">
+      <div class="preview-card">
+        <div class="preview-toolbar"><div><h2>Live preview</h2><div class="preview-subtitle">A4 · Portrait · Updates as you type</div></div><button class="btn btn-quiet" id="refreshPreviewBtn" type="button" style="font-size:10px;padding:6px 8px"><svg viewBox="0 0 24 24" fill="none"><path d="M20 7v5h-5M4 17v-5h5M5.5 9a7 7 0 0 1 11.8-2L20 12M4 12l2.7 5a7 7 0 0 0 11.8-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></div>
+        <div class="paper-stage"><div id="paper" class="paper"></div></div>
+        <div class="preview-foot"><span class="status">Preview is up to date</span><span id="previewPageType">COVER PAGE</span></div>
+      </div>
+    </aside>
+  </main>
+</div>
+<input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" />
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="printReport" class="print-report" aria-hidden="true"></div>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'codefolio-java-lab-report-v1';
+  const starterCode = `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java!");\n    }\n}`;
+  const defaultState = () => ({
+    reportTitle: 'Java Programming Lab Report',
+    courseName: 'Object-Oriented Programming',
+    courseCode: 'CSE 123',
+    studentName: '',
+    studentId: '',
+    section: '',
+    facultyName: '',
+    submissionDate: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}),
+    coverImage: '',
+    coverImageName: '',
+    pages: [
+      { id: makeId(), type:'cover', title:'Cover page' },
+      { id: makeId(), type:'code', filename:'Main.java', heading:'Problem 01', intro:'Write a Java program to display a greeting message.', code:starterCode, notes:'' }
+    ],
+    selectedId: null
+  });
+  function makeId(){ return 'p_' + Math.random().toString(36).slice(2,10); }
+  let state = null;
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    state = saved ? JSON.parse(saved) : defaultState();
+  } catch (e) { state = defaultState(); }
+  if (!state.pages || !state.pages.length) state = defaultState();
+  if (!state.pages.some(p => p.type === 'cover')) state.pages.unshift({id:makeId(), type:'cover', title:'Cover page'});
+  if (!state.selectedId || !state.pages.some(p => p.id === state.selectedId)) state.selectedId = state.pages[0].id;
+
+  const $ = (id) => document.getElementById(id);
+  const escapeHtml = (s='') => String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+  const currentIndex = () => state.pages.findIndex(p => p.id === state.selectedId);
+  const currentPage = () => state.pages[currentIndex()];
+  let saveTimer = null;
+  function persist() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      catch (e) { showToast('This report is too large to autosave. You can still export it as PDF.'); }
+    }, 180);
+  }
+  let toastTimer;
+  function showToast(message) {
+    const el = $('toast'); el.textContent = message; el.classList.add('show'); clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  }
+  function pageLabel(p) {
+    if (p.type === 'cover') return 'Cover page';
+    return (p.heading || (p.type === 'code' ? p.filename : 'Text page') || (p.type === 'code' ? 'Code page' : 'Text page')).trim();
+  }
+  function renderPageList() {
+    const list = $('pagesList'); list.innerHTML = '';
+    state.pages.forEach((p, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'page-nav-item' + (p.id === state.selectedId ? ' active' : '');
+      btn.type = 'button';
+      const miniClass = p.type === 'cover' ? 'cover-mini' : (p.type === 'code' ? 'code-mini' : 'text-mini');
+      const typeName = p.type === 'cover' ? 'COVER' : p.type === 'code' ? 'JAVA SOURCE' : 'TEXT PAGE';
+      btn.innerHTML = `<span class="mini-page ${miniClass}"><span></span><span></span><span></span><span></span></span><span class="page-nav-label"><span class="page-nav-title">${escapeHtml(pageLabel(p))}</span><span class="page-nav-type">${index + 1} · ${typeName}</span></span>`;
+      btn.addEventListener('click', () => { state.selectedId = p.id; renderAll(); });
+      list.appendChild(btn);
+    });
+    $('pageCounter').textContent = `PAGE ${currentIndex()+1} OF ${state.pages.length}`;
+  }
+  function inputField(label, key, placeholder='', options={}) {
+    const {value=state[key] || '', type='text', hint='', wide=false} = options;
+    return `<div class="field ${wide?'wide':''}"><label for="field_${key}">${escapeHtml(label)}${hint?`<span class="optional">${escapeHtml(hint)}</span>`:''}</label><input id="field_${key}" type="${type}" data-state-key="${key}" value="${escapeHtml(value)}" placeholder="${escapeHtml(placeholder)}" /></div>`;
+  }
+  function pageTextField(label, key, placeholder='', opts={}) {
+    const p = currentPage(); const {rows=4, hint=''}=opts;
+    return `<div class="field"><label for="page_${key}">${escapeHtml(label)}${hint?`<span class="optional">${escapeHtml(hint)}</span>`:''}</label><textarea id="page_${key}" data-page-key="${key}" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(p[key] || '')}</textarea></div>`;
+  }
+  function pageInputField(label, key, placeholder='', opts={}) {
+    const p = currentPage(); const {hint='', mono=false}=opts;
+    return `<div class="field"><label for="page_${key}">${escapeHtml(label)}${hint?`<span class="optional">${escapeHtml(hint)}</span>`:''}</label><input id="page_${key}" data-page-key="${key}" class="${mono?'mono':''}" value="${escapeHtml(p[key] || '')}" placeholder="${escapeHtml(placeholder)}" /></div>`;
+  }
+  function attachBindings() {
+    document.querySelectorAll('[data-state-key]').forEach(el => el.addEventListener('input', e => {
+      state[e.target.dataset.stateKey] = e.target.value; persist(); renderPreview();
+    }));
+    document.querySelectorAll('[data-page-key]').forEach(el => el.addEventListener('input', e => {
+      const p = currentPage(); p[e.target.dataset.pageKey] = e.target.value; persist(); renderPageList(); renderPreview();
+    }));
+    document.querySelectorAll('[data-action]').forEach(el => el.addEventListener('click', () => doPageAction(el.dataset.action)));
+  }
+  function renderEditor() {
+    const p = currentPage();
+    const title = $('editorTitle'), subtitle = $('editorSubtitle'), content = $('editorContent'), actions = $('pageActions');
+    actions.innerHTML = '';
+    const idx = currentIndex();
+    if (p.type !== 'cover') {
+      actions.innerHTML = `<button class="icon-btn" type="button" title="Move page up" aria-label="Move page up" data-action="up" ${idx<=1?'disabled':''}><svg viewBox="0 0 24 24" fill="none"><path d="m6 14 6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="icon-btn" type="button" title="Move page down" aria-label="Move page down" data-action="down" ${idx===state.pages.length-1?'disabled':''}><svg viewBox="0 0 24 24" fill="none"><path d="m6 10 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="icon-btn" type="button" title="Duplicate page" aria-label="Duplicate page" data-action="duplicate"><svg viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="11" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.7"/></svg></button><button class="icon-btn" type="button" title="Delete page" aria-label="Delete page" data-action="delete"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+    }
+    if (p.type === 'cover') {
+      title.textContent = 'Cover page'; subtitle.textContent = 'Set up your report details or upload a designed cover.';
+      content.innerHTML = `
+        <div class="cover-edit-title"><div class="eyebrow">Front page</div>${state.coverImage ? '<button class="btn btn-quiet" type="button" id="removeCoverBtn">Use custom cover</button>' : ''}</div>
+        <div class="upload-zone" id="uploadZone"><div class="upload-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><strong>${state.coverImage ? 'Cover image uploaded' : 'Upload your lab report front page'}</strong><p>${state.coverImage ? escapeHtml(state.coverImageName || 'cover image') : 'PNG, JPG, or WebP · Portrait images work best'}</p><button class="btn btn-secondary" type="button" id="chooseCoverBtn">${state.coverImage ? 'Replace image' : 'Choose image'}</button><input id="coverInputInline" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" /></div>
+        <div class="small-note">${state.coverImage ? 'Your uploaded image will be used as the first PDF page. Other pages will follow it.' : 'No cover image? Fill in the details below to generate a clean, designed cover automatically.'}</div>
+        <div class="editor-divider"></div>
+        <div class="field"><label for="field_reportTitle">Report title</label><input id="field_reportTitle" data-state-key="reportTitle" value="${escapeHtml(state.reportTitle)}" placeholder="Java Programming Lab Report" /></div>
+        <div class="field-grid">${inputField('Course name','courseName','e.g. Object-Oriented Programming')}${inputField('Course code','courseCode','e.g. CSE 123')}</div>
+        <div class="field-grid">${inputField('Student name','studentName','Your full name')}${inputField('Student ID','studentId','Your student ID')}</div>
+        <div class="field-grid">${inputField('Section','section','e.g. 69_A')}${inputField('Submission date','submissionDate','16 Oct 2026')}</div>
+        ${inputField('Submitted to','facultyName','Faculty member name')}
+      `;
+      const choose = $('chooseCoverBtn'); const inline = $('coverInputInline');
+      choose.addEventListener('click', () => inline.click());
+      inline.addEventListener('change', () => { if (inline.files && inline.files[0]) loadCoverFile(inline.files[0]); });
+      const zone = $('uploadZone');
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); const file=e.dataTransfer.files[0]; if(file) loadCoverFile(file); });
+      if ($('removeCoverBtn')) $('removeCoverBtn').addEventListener('click', () => { state.coverImage=''; state.coverImageName=''; persist(); renderAll(); showToast('Custom cover restored.'); });
+    } else if (p.type === 'code') {
+      title.textContent = p.filename || 'Java code page'; subtitle.textContent = 'Add a problem title, paste your code, and include notes if needed.';
+      content.innerHTML = `
+        ${pageInputField('File name','filename','Main.java',{mono:true})}
+        ${pageInputField('Page heading','heading','Problem 01')}
+        ${pageTextField('Problem statement / introduction','intro','Briefly describe what the program should do.',{rows:3,hint:'Optional'})}
+        <div class="editor-divider"></div>
+        <div class="field"><label for="page_code">Java source code <span class="optional">Paste your complete program</span></label><textarea id="page_code" data-page-key="code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your Java code here...">${escapeHtml(p.code || '')}</textarea><div class="small-note">Tip: use Tab for indentation. The PDF keeps code in a readable monospace font.</div></div>
+        ${pageTextField('Notes / explanation','notes','Optional: explain the logic, output, or important points.',{rows:3,hint:'Optional'})}
+      `;
+      const code = $('page_code');
+      code.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const start=code.selectionStart,end=code.selectionEnd; code.setRangeText('    ',start,end,'end'); code.dispatchEvent(new Event('input',{bubbles:true})); } });
+    } else {
+      title.textContent = p.heading || 'Text page'; subtitle.textContent = 'Write an algorithm, discussion, conclusion, or any supporting text.';
+      content.innerHTML = `${pageInputField('Page heading','heading','e.g. Algorithm / Discussion / Conclusion')}${pageTextField('Body text','body','Write your content here. You can use line breaks to separate paragraphs.',{rows:13})}<div class="small-note">Use a separate text page for explanations that should not be mixed into your source code.</div>`;
+    }
+    attachBindings();
+  }
+  function syntaxClass(token) {
+    if (/^\/\//.test(token) || /^\/\*/.test(token)) return 'tok-comment';
+    if (/^"/.test(token) || /^'/.test(token)) return 'tok-string';
+    if (/^\d/.test(token)) return 'tok-number';
+    if (/^(public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)$/.test(token)) return 'tok-key';
+    return '';
+  }
+  function highlightLine(line) {
+    const rx = /(\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)\b|\b\d+(?:\.\d+)?\b)/g;
+    let result='', last=0, match;
+    while ((match=rx.exec(line)) !== null) {
+      result += escapeHtml(line.slice(last,match.index));
+      const cls = syntaxClass(match[0]);
+      result += cls ? `<span class="${cls}">${escapeHtml(match[0])}</span>` : escapeHtml(match[0]);
+      last = match.index + match[0].length;
+    }
+    return result + escapeHtml(line.slice(last));
+  }
+  function previewCode(code) {
+    return (code || '').split('\n').map((line, i) => `<span class="ln">${String(i+1).padStart(2,' ')}</span>${highlightLine(line.replace(/\t/g,'    '))}`).join('\n');
+  }
+  function renderPreview() {
+    const p = currentPage(); const paper = $('paper');
+    paper.innerHTML = '';
+    $('previewPageType').textContent = p.type === 'cover' ? 'COVER PAGE' : p.type === 'code' ? 'JAVA SOURCE' : 'TEXT PAGE';
+    if (p.type === 'cover') {
+      if (state.coverImage) {
+        paper.innerHTML = `<img class="cover-image-preview" src="${state.coverImage}" alt="Uploaded report cover" /><span class="cover-img-label">Uploaded cover page</span>`;
+      } else {
+        paper.innerHTML = `<div class="cover-preview"><div class="cover-brand"><span class="cover-brand-mark">&lt;/&gt;</span><span>Codefolio · Academic report</span></div><div class="cover-overline">Computer Science & Engineering</div><h3>${escapeHtml(state.reportTitle || 'Java Lab Report')}</h3><div class="cover-sub">${escapeHtml(state.courseName || 'Course name')}${state.courseCode ? `\n${escapeHtml(state.courseCode)}` : ''}</div><div class="cover-line"></div><div class="cover-meta"><div><span>Submitted by</span><strong>${escapeHtml(state.studentName || 'Student name')}</strong></div><div><span>Student ID</span><strong>${escapeHtml(state.studentId || 'Your ID')}</strong></div><div><span>Section</span><strong>${escapeHtml(state.section || 'Section')}</strong></div><div><span>Submitted to</span><strong>${escapeHtml(state.facultyName || 'Faculty name')}</strong></div><div style="grid-column:1/-1"><span>Submission date</span><strong>${escapeHtml(state.submissionDate || 'Date')}</strong></div></div></div>`;
+      }
+    } else if (p.type === 'code') {
+      const pageContent = document.createElement('div'); pageContent.className='paper-content';
+      pageContent.innerHTML = `<div class="paper-filebar"><span class="file">${escapeHtml(p.filename || 'Main.java')}</span><span class="tag">JAVA SOURCE</span></div>${p.heading ? `<h3>${escapeHtml(p.heading)}</h3>` : ''}${p.intro ? `<p class="paper-intro">${escapeHtml(p.intro)}</p>` : ''}<pre class="paper-code">${previewCode(p.code || '')}</pre>${p.notes ? `<div class="paper-note">${escapeHtml(p.notes)}</div>` : ''}<div class="paper-footer"><span>CODEFOLIO · LAB REPORT</span><span>${currentIndex()+1}</span></div>`;
+      paper.appendChild(pageContent);
+    } else {
+      paper.innerHTML = `<div class="paper-content"><div class="paper-kicker">JAVA LAB REPORT · ${String(currentIndex()+1).padStart(2,'0')}</div><div style="height:15px"></div><h3>${escapeHtml(p.heading || 'Untitled page')}</h3><div class="paper-rule"></div><div class="paper-text-body">${escapeHtml(p.body || 'Your text will appear here. Add your algorithm, explanation, discussion, or conclusion in the editor.')}</div><div class="paper-footer"><span>CODEFOLIO · LAB REPORT</span><span>${currentIndex()+1}</span></div></div>`;
+    }
+    $('previewPageType').textContent = p.type === 'cover' ? 'COVER PAGE' : p.type === 'code' ? 'JAVA SOURCE' : 'TEXT PAGE';
+  }
+  function renderAll() { renderPageList(); renderEditor(); renderPreview(); persist(); }
+  function addPage(type) {
+    const p = type === 'code'
+      ? {id:makeId(),type:'code',filename:`${nextJavaName()}.java`,heading:`Problem ${String(state.pages.filter(x=>x.type==='code').length + 1).padStart(2,'0')}`,intro:'',code:'',notes:''}
+      : {id:makeId(),type:'text',heading:'Discussion',body:''};
+    const coverIndex = state.pages.findIndex(x=>x.type==='cover');
+    const insertAt = Math.min(Math.max(currentIndex()+1, coverIndex+1), state.pages.length);
+    state.pages.splice(insertAt,0,p); state.selectedId=p.id; renderAll(); showToast(type==='code'?'Code page added.':'Text page added.');
+  }
+  function nextJavaName() {
+    let n=1, name;
+    do { name = n===1 ? 'Main' : `Main${n}`; n++; } while(state.pages.some(p=>p.filename===`${name}.java`));
+    return name;
+  }
+  function doPageAction(action) {
+    const idx=currentIndex(); const p=currentPage();
+    if (action==='up' && idx>1) { [state.pages[idx-1],state.pages[idx]]=[state.pages[idx],state.pages[idx-1]]; }
+    else if (action==='down' && idx<state.pages.length-1) { [state.pages[idx+1],state.pages[idx]]=[state.pages[idx],state.pages[idx+1]]; }
+    else if (action==='duplicate') { const clone=JSON.parse(JSON.stringify(p)); clone.id=makeId(); clone.heading=(p.heading || (p.type==='code'?'Problem':'Text page'))+' (copy)'; state.pages.splice(idx+1,0,clone); state.selectedId=clone.id; showToast('Page duplicated.'); }
+    else if (action==='delete') {
+      if (!confirm(`Delete "${pageLabel(p)}"? This cannot be undone.`)) return;
+      state.pages.splice(idx,1); state.selectedId=state.pages[Math.max(0,idx-1)].id; showToast('Page deleted.');
+    }
+    renderAll();
+  }
+  function loadCoverFile(file) {
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { showToast('Choose a PNG, JPG, or WebP image.'); return; }
+    if (file.size > 12 * 1024 * 1024) { showToast('Please choose an image smaller than 12 MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 2200; const scale = Math.min(1, max / Math.max(img.width,img.height));
+        const canvas = document.createElement('canvas'); canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
+        const ctx=canvas.getContext('2d'); ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        state.coverImage=canvas.toDataURL('image/jpeg',.9); state.coverImageName=file.name; persist(); renderAll(); showToast('Cover page uploaded.');
+      };
+      img.onerror = () => showToast('Could not open that image. Try another file.'); img.src=e.target.result;
+    };
+    reader.onerror=()=>showToast('Could not read that file.'); reader.readAsDataURL(file);
+  }
+
+  function pdfText(doc, text, x, y, maxWidth, fontSize=10, color=[57,68,87], lineHeight=5) {
+    const raw = String(text || '');
+    if (!raw) return y;
+    doc.setFont('helvetica','normal'); doc.setFontSize(fontSize); doc.setTextColor(...color);
+    const paragraphs = raw.split('\n');
+    paragraphs.forEach((para, idx) => {
+      const lines = para ? doc.splitTextToSize(para, maxWidth) : [''];
+      lines.forEach(line => { doc.text(line, x, y); y += lineHeight; });
+      if (idx < paragraphs.length-1) y += lineHeight * .35;
+    });
+    return y;
+  }
+  const pdfColors = { bg:[17,27,43], white:[232,239,251], keyword:[133,181,255], string:[159,225,177], comment:[132,149,172], number:[242,199,125], muted:[135,148,170] };
+  function colorForCodeToken(token) {
+    if (/^\/\//.test(token) || /^\/\*/.test(token)) return pdfColors.comment;
+    if (/^"/.test(token) || /^'/.test(token)) return pdfColors.string;
+    if (/^\d/.test(token)) return pdfColors.number;
+    if (/^(public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)$/.test(token)) return pdfColors.keyword;
+    return pdfColors.white;
+  }
+  function drawHighlightedCodeLine(doc, line, x, y, fontSize=8.5) {
+    doc.setFont('courier','normal'); doc.setFontSize(fontSize);
+    const rx=/(\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)\b|\b\d+(?:\.\d+)?\b)/g;
+    let last=0, match, cursor=x;
+    while ((match=rx.exec(line))!==null) {
+      const plain=line.slice(last,match.index);
+      if (plain) { doc.setTextColor(...pdfColors.white); doc.text(plain,cursor,y); cursor += doc.getTextWidth(plain); }
+      doc.setTextColor(...colorForCodeToken(match[0])); doc.text(match[0],cursor,y); cursor += doc.getTextWidth(match[0]); last=match.index+match[0].length;
+    }
+    const tail=line.slice(last);
+    if(tail){doc.setTextColor(...pdfColors.white);doc.text(tail,cursor,y);}
+  }
+  function coverPdf(doc) {
+    if (state.coverImage) {
+      return new Promise(resolve => {
+        const image = new Image();
+        image.onload = () => {
+          const pageW=210,pageH=297,ratio=Math.min(pageW/image.width,pageH/image.height),w=image.width*ratio,h=image.height*ratio;
+          doc.addImage(state.coverImage,'JPEG',(pageW-w)/2,(pageH-h)/2,w,h,'cover','FAST'); resolve();
+        };
+        image.onerror=()=>{ drawGeneratedCover(doc); resolve(); }; image.src=state.coverImage;
+      });
+    }
+    drawGeneratedCover(doc); return Promise.resolve();
+  }
+  function drawGeneratedCover(doc) {
+    doc.setFillColor(246,248,252); doc.rect(0,0,210,297,'F');
+    doc.setFillColor(16,24,39); doc.rect(0,0,210,142,'F');
+    doc.setFillColor(91,103,235); doc.rect(0,0,6,142,'F');
+    doc.setDrawColor(57,72,105); doc.setLineWidth(.45);
+    [0,1,2,3].forEach(i => doc.circle(189,53,27+i*11,'S'));
+    doc.setFillColor(108,121,255); doc.roundedRect(21,24,17,17,3,3,'F');
+    doc.setTextColor(255,255,255); doc.setFont('courier','bold'); doc.setFontSize(7.2); doc.text('</>',29.5,34.8,{align:'center'});
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(204,213,235); doc.text('CODEFOLIO  /  ACADEMIC REPORT',44,34.5);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(147,161,255); doc.text('COMPUTER SCIENCE & ENGINEERING',22,75);
+    doc.setFont('helvetica','bold'); doc.setFontSize(25); doc.setTextColor(255,255,255);
+    const titleLines=doc.splitTextToSize(state.reportTitle || 'Java Lab Report',158);
+    let y=92; titleLines.slice(0,3).forEach(line=>{doc.text(line,22,y);y+=11;});
+    doc.setDrawColor(120,134,255); doc.setLineWidth(1.4); doc.line(22,y+4,61,y+4);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(188,199,220);
+    const courseLine=[state.courseName,state.courseCode].filter(Boolean).join('  ·  ');
+    if(courseLine) doc.text(doc.splitTextToSize(courseLine,158).slice(0,2),22,y+19);
+    const x1=22,x2=111, labelY=183;
+    doc.setDrawColor(219,224,234); doc.setLineWidth(.3); doc.line(22,164,188,164);
+    function meta(x,y,label,value,maxW=75){
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(131,143,162);doc.text(label.toUpperCase(),x,y);
+      doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(34,45,65);
+      const lines=doc.splitTextToSize(value||'—',maxW);doc.text(lines.slice(0,2),x,y+8);
+    }
+    meta(x1,labelY,'Submitted by',state.studentName,75); meta(x2,labelY,'Student ID',state.studentId,75);
+    meta(x1,labelY+36,'Course section',state.section,75); meta(x2,labelY+36,'Submitted to',state.facultyName,75);
+    doc.setDrawColor(219,224,234); doc.line(22,264,188,264);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(124,136,155);doc.text('SUBMISSION DATE',22,277);
+    doc.setFont('helvetica','bold');doc.setTextColor(44,55,75);doc.text(state.submissionDate || '—',22,284);
+    doc.setFont('courier','normal');doc.setFontSize(7);doc.setTextColor(153,161,176);doc.text('JAVA  /  LAB REPORT',188,284,{align:'right'});
+  }
+  function addDocumentHeader(doc, filename, continuation=false) {
+    const m=16, w=178;
+    doc.setFillColor(17,27,43); doc.roundedRect(m,15,w,13,2,2,'F');
+    doc.setFont('courier','normal');doc.setFontSize(9);doc.setTextColor(242,246,255);doc.text(filename || 'Main.java',m+5,23.3);
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(155,171,255);doc.text(continuation?'CONTINUED':'JAVA SOURCE',m+w-5,23.2,{align:'right'});
+    doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(m,33,m+w,33);
+    return 42;
+  }
+  function drawCodePanelStart(doc, y) {
+    doc.setFillColor(...pdfColors.bg); doc.roundedRect(16,y,178,10,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(148,164,188);doc.text('SOURCE CODE',21,y+6.5);
+    return y+15;
+  }
+  function drawTextPage(doc, p, displayNumber) {
+    doc.addPage(); let y=20;
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(112,125,147);doc.text(`JAVA LAB REPORT  /  ${String(displayNumber).padStart(2,'0')}`,16,y);
+    y+=17; doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(24,34,55);
+    const titleLines=doc.splitTextToSize(p.heading || 'Untitled page',176); titleLines.slice(0,3).forEach(line=>{doc.text(line,16,y);y+=9;});
+    y+=2;doc.setDrawColor(102,113,239);doc.setLineWidth(.9);doc.line(16,y,48,y);y+=12;
+    const paragraphs=String(p.body||'').split('\n');
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(69,82,104);
+    for(let pi=0;pi<paragraphs.length;pi++){
+      const lines=paragraphs[pi]?doc.splitTextToSize(paragraphs[pi],178):[''];
+      for(const line of lines){
+        if(y>270){doc.addPage();y=23;doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(120,132,153);doc.text(`${p.heading || 'TEXT PAGE'}  /  CONTINUED`,16,y);y+=13;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(69,82,104);}
+        doc.text(line,16,y);y+=6;
+      }
+      if(pi<paragraphs.length-1)y+=4;
+    }
+  }
+  function drawCodePage(doc,p,displayNumber){
+    doc.addPage(); let y=addDocumentHeader(doc,p.filename,false);
+    if(p.heading){doc.setFont('helvetica','bold');doc.setFontSize(19);doc.setTextColor(23,34,55);const hs=doc.splitTextToSize(p.heading,178);hs.slice(0,3).forEach(line=>{doc.text(line,16,y);y+=8;});y+=1;}
+    if(p.intro){ y=pdfText(doc,p.intro,16,y,178,9,[93,107,130],4.7); y+=5; }
+    y=drawCodePanelStart(doc,y);
+    const code=String(p.code||''); const rawLines=code.split('\n'); const maxCols=90; const fontSize=8.2; const lineH=4.15; const startX=29; const bottom=273;
+    let shownLine=0;
+    for(let li=0;li<rawLines.length;li++){
+      let line=rawLines[li].replace(/\t/g,'    ');
+      const chunks=[];
+      if(line.length===0) chunks.push(''); else for(let i=0;i<line.length;i+=maxCols) chunks.push(line.slice(i,i+maxCols));
+      for(let ci=0;ci<chunks.length;ci++){
+        if(y+lineH>bottom){doc.addPage();y=addDocumentHeader(doc,p.filename,true);y=drawCodePanelStart(doc,y);}
+        const shade=(shownLine%2===0)?[17,27,43]:[19,31,49];
+        doc.setFillColor(...shade);doc.rect(16,y-3.4,178,lineH,'F');
+        doc.setFont('courier','normal');doc.setFontSize(7.2);doc.setTextColor(92,109,135);
+        doc.text(ci===0?String(li+1).padStart(2,' '):'↳',23,y-0.4);
+        drawHighlightedCodeLine(doc,chunks[ci],startX,y-.4,fontSize);y+=lineH;shownLine++;
+      }
+    }
+    y+=6;
+    if(p.notes){
+      const noteTitle='NOTES / EXPLANATION';
+      if(y>254){doc.addPage();y=25;doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(123,136,158);doc.text(`${p.filename || 'JAVA SOURCE'}  /  NOTES`,16,y);y+=15;}
+      doc.setFillColor(238,240,255);doc.roundedRect(16,y,2,Math.min(35,10+String(p.notes).split('\n').length*4.8),1,1,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(91,101,204);doc.text(noteTitle,22,y+5);y+=11;
+      y=pdfText(doc,p.notes,22,y,170,8.5,[83,96,118],4.7);
+    }
+  }
+  function preparePrintReport() {
+    const root=$('printReport'); root.innerHTML='';
+    const cover=document.createElement('section'); cover.className='print-sheet';
+    if(state.coverImage){ cover.innerHTML=`<img class="print-cover-img" src="${state.coverImage}" alt="Uploaded cover page">`; }
+    else {
+      cover.innerHTML=`<div class="print-cover"><div style="font-size:9pt;letter-spacing:1.5pt;color:#bec8df;font-weight:700">CODEFOLIO / ACADEMIC REPORT</div><div style="margin-top:28mm;color:#8f9cff;font-size:9pt;letter-spacing:1.8pt;font-weight:700">COMPUTER SCIENCE &amp; ENGINEERING</div><h1>${escapeHtml(state.reportTitle || 'Java Lab Report')}</h1><div class="print-cover-sub">${escapeHtml([state.courseName,state.courseCode].filter(Boolean).join(' · '))}</div><div class="print-meta-grid"><div><span>Submitted by</span><strong>${escapeHtml(state.studentName||'—')}</strong></div><div><span>Student ID</span><strong>${escapeHtml(state.studentId||'—')}</strong></div><div><span>Course section</span><strong>${escapeHtml(state.section||'—')}</strong></div><div><span>Submitted to</span><strong>${escapeHtml(state.facultyName||'—')}</strong></div><div><span>Submission date</span><strong>${escapeHtml(state.submissionDate||'—')}</strong></div></div></div>`;
+    }
+    root.appendChild(cover);
+    state.pages.forEach((p,index)=>{
+      if(p.type==='cover') return;
+      const sheet=document.createElement('section');sheet.className='print-sheet';
+      if(p.type==='code'){
+        sheet.innerHTML=`<div class="print-filebar">${escapeHtml(p.filename||'Main.java')}</div>${p.heading?`<h2>${escapeHtml(p.heading)}</h2>`:''}${p.intro?`<p class="print-intro">${escapeHtml(p.intro)}</p>`:''}<pre class="print-code">${escapeHtml(p.code||'')}</pre>${p.notes?`<div class="print-notes">${escapeHtml(p.notes)}</div>`:''}<div class="print-footer"><span>CODEFOLIO · JAVA LAB REPORT</span><span>${index+1}</span></div>`;
+      } else {
+        sheet.innerHTML=`<div class="print-kicker">JAVA LAB REPORT / ${String(index+1).padStart(2,'0')}</div><h2>${escapeHtml(p.heading||'Untitled page')}</h2><div style="width:30mm;height:1mm;background:#727df1;margin:0 0 10mm"></div><div class="print-text-body">${escapeHtml(p.body||'')}</div><div class="print-footer"><span>CODEFOLIO · JAVA LAB REPORT</span><span>${index+1}</span></div>`;
+      }
+      root.appendChild(sheet);
+    });
+  }
+
+  async function exportPdf() {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      showToast('PDF engine could not load. Choose Save as PDF in the print dialog.');
+      preparePrintReport(); window.print(); return;
+    }
+    const btn=$('exportBtn');btn.classList.add('exporting');btn.textContent='Preparing PDF…';
+    try {
+      const { jsPDF }=window.jspdf;
+      const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+      await coverPdf(doc);
+      let logicalNumber=1;
+      for(const p of state.pages){
+        if(p.type==='cover') continue;
+        logicalNumber++;
+        if(p.type==='code') drawCodePage(doc,p,logicalNumber); else drawTextPage(doc,p,logicalNumber);
+      }
+      const total=doc.getNumberOfPages();
+      for(let i=2;i<=total;i++){
+        doc.setPage(i);doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(16,283,194,283);
+        doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(145,154,171);doc.text('CODEFOLIO  ·  JAVA LAB REPORT',16,289);
+        doc.setFont('courier','normal');doc.text(`${String(i).padStart(2,'0')} / ${String(total).padStart(2,'0')}`,194,289,{align:'right'});
+      }
+      const filename=(state.reportTitle||'Java-Lab-Report').trim().replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').slice(0,70)||'Java-Lab-Report';
+      doc.save(`${filename}.pdf`);showToast('Your PDF has been exported.');
+    } catch (err) {
+      console.error(err);showToast('PDF export failed. Try a smaller cover image or use Print → Save as PDF.');
+    } finally {
+      btn.classList.remove('exporting');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Export PDF';
+    }
+  }
+
+  $('addCodeTop').addEventListener('click',()=>addPage('code'));
+  $('addCodeBtn').addEventListener('click',()=>addPage('code'));
+  $('addTextBtn').addEventListener('click',()=>addPage('text'));
+  $('exportBtn').addEventListener('click',exportPdf);
+  $('refreshPreviewBtn').addEventListener('click',()=>{renderPreview();showToast('Preview refreshed.');});
+  $('coverInput').addEventListener('change',e=>{if(e.target.files[0])loadCoverFile(e.target.files[0]);});
+  renderAll();
+})();
+</script>
+</body>
+</html>
