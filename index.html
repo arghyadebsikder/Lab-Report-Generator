@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#111827" />
-  <title>Codefolio — Java Lab Report Studio</title>
-  <meta name="description" content="Create polished Java lab reports with code pages, text pages, cover upload, and PDF export. Everything runs in your browser." />
+  <title>Java Lab Report Studio</title>
+  <meta name="description" content="Create polished DIU Java lab reports with syntax-highlighted code, page management, a custom cover, and PDF export." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -270,15 +270,78 @@
       .print-cover .print-report-number { width:max-content; margin:0 auto 5mm; border-bottom:1px solid #293d64; color:#293d64; font-size:15pt; font-weight:800; padding-bottom:1.5mm; }
       .print-cover h1 { color:#111827 !important; font-size:15pt !important; line-height:1.25 !important; max-width:100% !important; margin:7mm 0 8mm !important; }
       .print-cover .print-cover-sub { color:#111827 !important; font-size:10pt !important; }
-      .print-cover .print-meta-grid { gap:7mm 10mm; margin-top:18mm; padding-top:6mm; border-top:1px solid #e5e7eb; }
-      .print-cover .print-meta-grid span { color:#293d64 !important; }
-      .print-cover .print-meta-grid strong { color:#111827 !important; }
+      .print-cover .print-meta-grid { display:flex; flex-direction:column; gap:3mm; margin-top:8mm; padding-top:5mm; border-top:1px solid #e5e7eb; text-align:center; }
+      .print-cover .print-meta-grid span { display:inline; margin-right:2mm; color:#293d64 !important; }
+      .print-cover .print-meta-grid strong { display:inline; color:#111827 !important; }
       .print-cover .print-submit-section { margin-top:13mm; text-align:center; color:#293d64; font-weight:bold; }
       .print-cover .print-faculty-details { text-align:center; font-size:9pt; margin-top:2mm; }
-      .print-cover .print-report-date { margin:20mm auto 0; padding:2mm 4mm; border:1px solid #293d64; border-radius:6mm; color:#293d64; width:max-content; }
+      .print-cover .print-report-date { margin:12mm auto 0; padding:2mm 4mm; border:1px solid #293d64; border-radius:6mm; color:#293d64; width:max-content; display:flex; gap:2mm; align-items:center; justify-content:center; }
       .print-filebar { margin-top:2mm; }
       .print-problem-heading { color:#17233b; font:bold 13pt Arial,sans-serif; margin:0 0 3mm; padding-bottom:2mm; border-bottom:1px solid #e5eaf2; }
       .print-code { font-family:var(--print-code-font,monospace) !important; font-size:var(--print-code-size,8pt) !important; }
+    }
+
+
+    /* Refinement: richer Java syntax highlighting, legible code editing, and centered DIU cover */
+    .brand-name { font-size:15px; letter-spacing:-.35px; }
+    .tok-key { color:#ff79c6; }
+    .tok-type { color:#80d8ff; }
+    .tok-string { color:#c3e88d; }
+    .tok-comment { color:#8492a6; font-style:italic; }
+    .tok-number { color:#f6c177; }
+    .tok-method { color:#82aaff; }
+    .tok-annotation { color:#c792ea; }
+    .tok-constant { color:#ffcb6b; }
+    .tok-operator { color:#89ddff; }
+    .tok-punctuation { color:#c6d0e1; }
+    .page-nav-title { white-space:normal; line-height:1.35; overflow-wrap:anywhere; }
+    .page-nav-type { overflow-wrap:anywhere; line-height:1.35; }
+    .code-editor-wrap { position:relative; min-height:285px; border:1px solid #1b2941; border-radius:10px; background:#111b2b; overflow:hidden; }
+    .code-highlight { position:absolute; inset:0; z-index:1; pointer-events:none; margin:0; padding:15px; min-width:100%; width:max-content; min-height:100%; color:#e6edf8; white-space:pre; overflow:visible; line-height:1.62; tab-size:4; background:transparent; transform:translate(0,0); }
+    .field textarea.code-input { position:relative; z-index:2; display:block; width:100%; min-height:285px; margin:0; resize:vertical; background:transparent; color:transparent !important; -webkit-text-fill-color:transparent; caret-color:#f5f7ff; border:0; border-radius:0; outline:none; box-shadow:none; padding:15px; font:10pt/1.62 'DM Mono',monospace; tab-size:4; white-space:pre; overflow:auto; }
+    .field textarea.code-input:focus { border:0; box-shadow:none; }
+    .field textarea.code-input::selection { background:rgba(109,132,255,.42); -webkit-text-fill-color:transparent; }
+    .field textarea.code-input::placeholder { color:#71819a; -webkit-text-fill-color:#71819a; }
+    .paper-code { font-size:8px; line-height:1.72; padding:12px 10px; border:1px solid #26354d; box-shadow:inset 0 1px 0 rgba(255,255,255,.025); }
+    .paper-code .ln { width:24px; color:#72829b; border-right:1px solid #314057; margin-right:8px; padding-right:5px; }
+    .problem-header { align-items:flex-start; }
+    .problem-header .problem-title { font-size:14px; line-height:1.35; }
+    .paper-filebar { min-height:28px; padding:8px 10px; }
+    .paper-filebar .file { font-size:8px; }
+    .cover-preview { padding:7.5% 8%; }
+    .cover-preview .cover-brand-image { width:91%; height:80px; margin:0 auto 12px; }
+    .cover-preview .cover-report-label { margin:0 auto 13px; }
+    .cover-preview .cover-title { width:100%; margin:0 auto 15px; text-align:center; font-size:14px; line-height:1.32; }
+    .cover-preview .cover-course { align-items:center; gap:6px; margin-bottom:14px; }
+    .cover-preview .cover-course-item { display:block; text-align:center; font-size:8px; }
+    .cover-preview .cover-course-item span { margin-right:4px; }
+    .cover-preview .cover-submitted-to { margin:13px 0 16px; text-align:center; }
+    .cover-preview .cover-student-block { margin-top:12px; text-align:center; }
+    .cover-preview .cover-student-grid { grid-template-columns:1fr; gap:5px; justify-items:center; text-align:center; font-size:8px; line-height:1.38; }
+    .cover-preview .cover-date { display:flex; align-items:center; justify-content:center; gap:5px; margin:19px auto 0; }
+    .cover-preview .cover-date svg { display:block; width:11px; height:11px; flex:none; }
+    .print-cover { text-align:center; }
+    .print-cover .print-diu-wordmark { display:block; }
+    .print-cover .print-report-number { text-align:center; }
+    .print-cover h1 { text-align:center; margin-left:auto; margin-right:auto; }
+    .print-cover .print-cover-sub { color:#111827; font-size:10pt; line-height:1.65; text-align:center; }
+    .print-cover-course { margin:0 auto 2mm; line-height:1.6; }
+    .print-cover-course > div { text-align:center; }
+    .print-cover .print-meta-grid { display:flex; flex-direction:column; align-items:center; gap:3mm; margin-top:8mm; padding-top:5mm; border-top:1px solid #e5e7eb; text-align:center; }
+    .print-cover .print-meta-grid > div { width:100%; text-align:center; }
+    .print-cover .print-meta-grid span { display:inline; margin:0 2mm 0 0; color:#293d64; }
+    .print-cover .print-meta-grid strong { display:inline; color:#111827; }
+    .print-cover .print-submit-section { margin-top:9mm; text-align:center; color:#293d64; font-weight:bold; }
+    .print-cover .print-faculty-name, .print-cover .print-faculty-details { text-align:center; }
+    .print-cover .print-submitted-by-details { margin:3mm auto 0; line-height:1.65; text-align:center; }
+    .print-cover .print-report-date { margin:12mm auto 0; padding:2mm 4mm; border:1px solid #293d64; border-radius:6mm; color:#293d64; width:max-content; display:flex; gap:2mm; align-items:center; justify-content:center; }
+    .print-cover .print-report-date svg { width:4mm; height:4mm; flex:none; }
+    .print-code { line-height:1.62 !important; }
+    .print-code .ln { display:inline-block; width:8mm; padding-right:1.5mm; margin-right:2mm; border-right:.25mm solid #34445d; color:#74839b; user-select:none; }
+    @media (max-width:760px) {
+      .code-editor-wrap, .field textarea.code-input { min-height:250px; }
+      .code-highlight { font-size:9pt !important; }
+      .cover-preview .cover-brand-image { height:70px; }
     }
 
   </style>
@@ -288,7 +351,7 @@
   <header class="topbar">
     <div class="brand">
       <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 5 2.5 12 7 19M17 5l4.5 7-4.5 7M14.3 3.5 9.7 20.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><div class="brand-name">Codefolio</div><div class="brand-sub">Java Lab Report Studio</div></div>
+      <div><div class="brand-name">Lab Report Studio</div><div class="brand-sub">DIU · JAVA PDF BUILDER</div></div>
     </div>
     <div class="topbar-right">
       <div class="privacy"><span class="dot"></span><span>Saved in this browser</span></div>
@@ -342,24 +405,37 @@
   const DIU_WATERMARK_DATA = 'data:image/jpeg;base64,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';
   const starterCode = `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java!");\n    }\n}`;
   const REPORT_TOPIC_DEFAULT = 'Summer -26 & Fall - 25 OOP Mid Term Question Solution Using JAVA';
+  function localISODate(date = new Date()) {
+    const y=date.getFullYear(), m=String(date.getMonth()+1).padStart(2,'0'), d=String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  function normaliseISODate(value) {
+    if (!value) return localISODate();
+    const raw=String(value).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+    const dmy=raw.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/);
+    if (dmy) return `${dmy[3]}-${String(dmy[2]).padStart(2,'0')}-${String(dmy[1]).padStart(2,'0')}`;
+    const parsed=new Date(raw); return Number.isNaN(parsed.getTime()) ? localISODate() : localISODate(parsed);
+  }
+  function displayDate(value) { const [y,m,d]=normaliseISODate(value).split('-'); return `${d}/${m}/${y}`; }
   const defaultState = () => ({
     labReportNumber: '02',
     reportTitle: REPORT_TOPIC_DEFAULT,
-    courseName: 'Object-Oriented Programming',
-    courseCode: '',
+    courseName: 'Object Oriented Programming Lab',
+    courseCode: 'CSE222',
     studentName: '',
     studentId: '',
-    section: '',
+    section: '69_',
     semester: 'Level - 2, Term - 2',
     department: 'Department of CSE',
     facultyName: 'Pranto Protim Choudhury (PPC)',
     facultyDesignation: 'Lecturer',
-    submissionDate: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'}),
+    submissionDate: localISODate(),
     coverImage: '',
     coverImageName: '',
     pages: [
       { id: makeId(), type:'cover', title:'Cover page' },
-      { id: makeId(), type:'code', filename:'Main.java', heading:'Problem 01', intro:'', code:starterCode, notes:'', codeFontFamily:'Monospace', codeFontSize:'8' }
+      { id: makeId(), type:'code', filename:'Main.java', heading:'Problem 1', intro:'', code:starterCode, notes:'', codeFontFamily:'Monospace', codeFontSize:'10' }
     ],
     selectedId: null
   });
@@ -376,11 +452,16 @@
   if (!state.semester) state.semester = 'Level - 2, Term - 2';
   if (!state.department) state.department = 'Department of CSE';
   if (!state.facultyDesignation) state.facultyDesignation = 'Lecturer';
+  if (!state.courseName || state.courseName === 'Object-Oriented Programming') state.courseName = 'Object Oriented Programming Lab';
+  if (!state.courseCode) state.courseCode = 'CSE222';
+  if (!state.section) state.section = '69_';
+  state.submissionDate = normaliseISODate(state.submissionDate);
   state.pages.forEach(pg => {
     if (pg.type === 'code') {
       if (!pg.filename) pg.filename = 'Main.java';
       if (!pg.codeFontFamily) pg.codeFontFamily = 'Monospace';
-      if (!pg.codeFontSize) pg.codeFontSize = '8';
+      if (!pg.codeFontSize || pg.codeFontSize === '8') pg.codeFontSize = '10';
+      if (pg.heading === 'Problem 01') pg.heading = 'Problem 1';
     }
   });
   if (!state.pages.some(p => p.type === 'cover')) state.pages.unshift({id:makeId(), type:'cover', title:'Cover page'});
@@ -425,8 +506,8 @@
       const btn = document.createElement('button');
       btn.className = 'page-nav-item'; btn.type = 'button';
       const miniClass = p.type === 'cover' ? 'cover-mini' : (p.type === 'code' ? 'code-mini' : 'text-mini');
-      const typeName = p.type === 'cover' ? 'DIU COVER' : p.type === 'code' ? (p.filename || 'Main.java') : 'TEXT PAGE';
-      btn.innerHTML = `<span class="mini-page ${miniClass}"><span></span><span></span><span></span><span></span></span><span class="page-nav-label"><span class="page-nav-title">${escapeHtml(pageLabel(p))}</span><span class="page-nav-type">${index + 1} · ${escapeHtml(typeName)}</span></span>`;
+      const typeName = p.type === 'cover' ? `DIU COVER · PAGE ${index+1}` : p.type === 'code' ? `${p.filename || 'Main.java'} · PAGE ${index+1}` : `TEXT PAGE · PAGE ${index+1}`;
+      btn.innerHTML = `<span class="mini-page ${miniClass}"><span></span><span></span><span></span><span></span></span><span class="page-nav-label"><span class="page-nav-title">${escapeHtml(pageLabel(p))}</span><span class="page-nav-type">${escapeHtml(typeName)}</span></span>`;
       btn.addEventListener('click', () => { state.selectedId = p.id; renderAll(); });
       row.appendChild(btn);
       if (p.type !== 'cover') {
@@ -463,6 +544,7 @@
       const update = e => {
         const p = currentPage(); if (!p) return;
         p[e.target.dataset.pageKey] = e.target.value;
+        if (p.type === 'code' && ['codeFontFamily','codeFontSize','code'].includes(e.target.dataset.pageKey)) updateCodeEditorHighlight();
         if (e.target.dataset.pageKey === 'heading') $('editorTitle').textContent = p.heading || (p.type==='code' ? 'Java code page' : 'Text page');
         persist(); renderPageList(); renderPreview();
       };
@@ -483,16 +565,16 @@
       content.innerHTML = `
         <div class="cover-edit-title"><div class="eyebrow">Front page · Daffodil International University</div>${state.coverImage ? '<button class="btn btn-quiet" type="button" id="removeCoverBtn">Use designed cover</button>' : ''}</div>
         <div class="upload-zone" id="uploadZone"><div class="upload-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><strong>${state.coverImage ? 'Custom cover uploaded' : 'Upload your own front page (optional)'}</strong><p>${state.coverImage ? escapeHtml(state.coverImageName || 'cover image') : 'PNG, JPG, or WebP · Portrait images work best'}</p><button class="btn btn-secondary" type="button" id="chooseCoverBtn">${state.coverImage ? 'Replace image' : 'Choose cover image'}</button><input id="coverInputInline" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" /></div>
-        <div class="small-note">Without an upload, Codefolio builds a clean cover using the DIU wordmark, report number, topic and details below.</div>
+        <div class="small-note">Without an upload, a clean cover is built using the DIU wordmark, report number, topic and details below.</div>
         <div class="editor-divider"></div>
         <div class="field-grid">${inputField('Lab report number','labReportNumber','02')}</div>
         <div class="field"><label for="field_reportTitle">Report topic / title</label><textarea id="field_reportTitle" data-state-key="reportTitle" rows="3" placeholder="Summer -26 & Fall - 25 OOP Mid Term Question Solution Using JAVA">${escapeHtml(state.reportTitle)}</textarea><div class="small-note">This appears beneath the lab report number on the cover. The label “Experiment Name” is not used.</div></div>
-        <div class="field-grid">${inputField('Course title','courseName','Object-Oriented Programming')}${inputField('Course code','courseCode','Enter course code')}</div>
+        <div class="field-grid">${inputField('Course title','courseName','Object Oriented Programming Lab')}${inputField('Course code','courseCode','CSE222')}</div>
         <div class="editor-divider"></div>
         <div class="field-grid">${inputField('Student name','studentName','Your full name')}${inputField('Student ID','studentId','Your student ID')}</div>
-        <div class="field-grid">${inputField('Section','section','e.g. 69_A')}${inputField('Semester','semester','Level - 2, Term - 2')}</div>
+        <div class="field-grid">${inputField('Section','section','69_')}${inputField('Semester','semester','Level - 2, Term - 2')}</div>
         <div class="field-grid">${inputField('Submitted to','facultyName','Faculty member name')}${inputField('Designation','facultyDesignation','Lecturer')}</div>
-        <div class="field-grid">${inputField('Department','department','Department of CSE')}${inputField('Submission date','submissionDate','16/10/2026')}</div>
+        <div class="field-grid">${inputField('Department','department','Department of CSE')}${inputField('Submission date','submissionDate','',{type:'date'})}</div>
       `;
       const choose = $('chooseCoverBtn'); const inline = $('coverInputInline');
       choose.addEventListener('click', () => inline.click());
@@ -505,9 +587,9 @@
     } else if (p.type === 'code') {
       title.textContent = p.heading || 'Java code page'; subtitle.textContent = 'Problem heading, file name, code style and source code.';
       const family = p.codeFontFamily || 'Monospace';
-      const size = String(p.codeFontSize || '8');
+      const size = String(p.codeFontSize || '10');
       content.innerHTML = `
-        ${pageInputField('Problem number / heading','heading','Problem 01',{hint:'Shown at the top of the page'})}
+        ${pageInputField('Problem number / heading','heading','Problem 1',{hint:'Shown at the top of the page'})}
         ${pageInputField('Java file name','filename','Main.java',{mono:true,hint:'Editable · defaults to Main.java'})}
         <div class="code-settings">
           <div class="field"><label for="page_codeFontFamily">Code font</label><select id="page_codeFontFamily" data-page-key="codeFontFamily"><option ${family==='Monospace'?'selected':''}>Monospace</option><option ${family==='Sans serif'?'selected':''}>Sans serif</option><option ${family==='Serif'?'selected':''}>Serif</option></select></div>
@@ -515,10 +597,13 @@
         </div>
         ${pageTextField('Problem statement / introduction','intro','Briefly describe what the program should do.',{rows:3,hint:'Optional'})}
         <div class="editor-divider"></div>
-        <div class="field"><label for="page_code">Java source code <span class="optional">Paste your complete program</span></label><textarea id="page_code" data-page-key="code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your Java code here...">${escapeHtml(p.code || '')}</textarea><div class="small-note">Use Tab for indentation. Code font and size apply to the preview and exported PDF.</div></div>
+        <div class="field"><label for="page_code">Java source code <span class="optional">Paste your complete program</span></label><div class="code-editor-wrap"><pre id="page_code_highlight" class="code-highlight" aria-hidden="true"></pre><textarea id="page_code" data-page-key="code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your Java code here...">${escapeHtml(p.code || '')}</textarea></div><div class="small-note">Syntax highlighting appears as you type. Code font and size apply to the editor, page preview and exported PDF.</div></div>
         ${pageTextField('Notes / explanation','notes','Optional: explain the logic, output, or important points.',{rows:3,hint:'Optional'})}
       `;
       const code = $('page_code');
+      updateCodeEditorHighlight();
+      code.addEventListener('input', updateCodeEditorHighlight);
+      code.addEventListener('scroll', updateCodeEditorScroll);
       code.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const start=code.selectionStart,end=code.selectionEnd; code.setRangeText('    ',start,end,'end'); code.dispatchEvent(new Event('input',{bubbles:true})); } });
     } else {
       title.textContent = p.heading || 'Text page'; subtitle.textContent = 'Write an algorithm, discussion, conclusion, or any supporting text.';
@@ -526,23 +611,49 @@
     }
     attachBindings();
   }
-  function syntaxClass(token) {
+  const JAVA_KEYWORDS = new Set(['abstract','assert','break','case','catch','class','const','continue','default','do','else','extends','final','finally','for','goto','if','implements','import','instanceof','interface','native','new','package','private','protected','public','return','static','strictfp','super','switch','synchronized','this','throw','throws','transient','try','volatile','while','yield','var','record','enum']);
+  const JAVA_TYPES = new Set(['byte','short','int','long','float','double','char','boolean','void','String','Integer','Double','Float','Long','Short','Byte','Character','Boolean','Object','Class','System','Math','Scanner','Arrays','ArrayList','LinkedList','List','Map','HashMap','Set','HashSet','Random','StringBuilder','StringBuffer','Exception','RuntimeException','Thread','BigInteger','BigDecimal']);
+  function javaTokenRegex() {
+    return /(\/\/.*|\/\*.*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|@[A-Za-z_$][\w$]*|\b(?:true|false|null)\b|\b(?:abstract|assert|break|case|catch|class|const|continue|default|do|else|extends|final|finally|for|goto|if|implements|import|instanceof|interface|native|new|package|private|protected|public|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|volatile|while|yield|var|record|enum)\b|\b(?:byte|short|int|long|float|double|char|boolean|void|String|Integer|Double|Float|Long|Short|Byte|Character|Boolean|Object|Class|System|Math|Scanner|Arrays|ArrayList|LinkedList|List|Map|HashMap|Set|HashSet|Random|StringBuilder|StringBuffer|Exception|RuntimeException|Thread|BigInteger|BigDecimal)\b|\b\d+(?:\.\d+)?(?:[fFdDlL])?\b|\b[A-Za-z_$][\w$]*\b|[=+\-*\/%&|!<>?:~^]+|[{}()[\];,.])/g;
+  }
+  function syntaxClass(token, line='', endIndex=0) {
     if (/^\/\//.test(token) || /^\/\*/.test(token)) return 'tok-comment';
     if (/^"/.test(token) || /^'/.test(token)) return 'tok-string';
+    if (/^@[A-Za-z_$]/.test(token)) return 'tok-annotation';
+    if (/^(true|false|null)$/.test(token)) return 'tok-constant';
     if (/^\d/.test(token)) return 'tok-number';
-    if (/^(public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)$/.test(token)) return 'tok-key';
+    if (JAVA_KEYWORDS.has(token)) return 'tok-key';
+    if (JAVA_TYPES.has(token) || /^[A-Z][A-Za-z0-9_$]*$/.test(token)) return 'tok-type';
+    if (/^[A-Za-z_$][\w$]*$/.test(token) && /^\s*\(/.test(line.slice(endIndex))) return 'tok-method';
+    if (/^[=+\-*\/%&|!<>?:~^]+$/.test(token)) return 'tok-operator';
+    if (/^[{}()[\];,.]$/.test(token)) return 'tok-punctuation';
     return '';
   }
   function highlightLine(line) {
-    const rx = /(\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)\b|\b\d+(?:\.\d+)?\b)/g;
-    let result='', last=0, match;
+    const rx=javaTokenRegex(); let result='', last=0, match;
     while ((match=rx.exec(line)) !== null) {
       result += escapeHtml(line.slice(last,match.index));
-      const cls = syntaxClass(match[0]);
+      const cls=syntaxClass(match[0],line,rx.lastIndex);
       result += cls ? `<span class="${cls}">${escapeHtml(match[0])}</span>` : escapeHtml(match[0]);
-      last = match.index + match[0].length;
+      last=match.index+match[0].length;
     }
     return result + escapeHtml(line.slice(last));
+  }
+  function updateCodeEditorScroll() {
+    const editor=$('page_code'), highlight=$('page_code_highlight');
+    if (!editor || !highlight) return;
+    highlight.style.transform=`translate(${-editor.scrollLeft}px, ${-editor.scrollTop}px)`;
+  }
+  function updateCodeEditorHighlight() {
+    const editor=$('page_code'), highlight=$('page_code_highlight');
+    if (!editor || !highlight) return;
+    const p=currentPage();
+    const family=codeCssFont(p?.codeFontFamily || 'Monospace');
+    const size=Math.max(6,Math.min(12,Number(p?.codeFontSize)||10));
+    editor.style.fontFamily=family; editor.style.fontSize=`${size}pt`;
+    highlight.style.fontFamily=family; highlight.style.fontSize=`${size}pt`;
+    highlight.innerHTML=editor.value.split('\n').map(line=>highlightLine(line.replace(/\t/g,'    '))).join('\n') + (editor.value.endsWith('\n') ? ' ' : '');
+    updateCodeEditorScroll();
   }
   function codeCssFont(family) {
     return family === 'Sans serif' ? 'Arial, Helvetica, sans-serif' : family === 'Serif' ? 'Georgia, Times New Roman, serif' : "'DM Mono', 'JetBrains Mono', Consolas, monospace";
@@ -562,26 +673,26 @@
       if (state.coverImage) {
         paper.innerHTML = `<img class="cover-image-preview" src="${state.coverImage}" alt="Uploaded report cover" /><span class="cover-img-label">Uploaded cover page</span>`;
       } else {
-        const date = state.submissionDate || '—';
+        const date = displayDate(state.submissionDate);
         paper.innerHTML = `<div class="cover-preview">
           <div class="cover-frame"></div><img class="cover-watermark" src="${DIU_WATERMARK_DATA}" alt="" aria-hidden="true" />
           <img class="cover-brand-image" src="${DIU_WORDMARK_DATA}" alt="Daffodil International University" />
           <div class="cover-report-label">LAB REPORT - ${escapeHtml(state.labReportNumber || '02')}</div>
           <div class="cover-title">${escapeHtml(state.reportTitle || REPORT_TOPIC_DEFAULT)}</div>
           <div class="cover-course">
-            <div class="cover-course-item"><span>Course Code:</span><strong>${escapeHtml(state.courseCode || '—')}</strong></div>
-            <div class="cover-course-item"><span>Course Title:</span><strong>${escapeHtml(state.courseName || 'Object-Oriented Programming')}</strong></div>
+            <div class="cover-course-item"><span>Course Code:</span><strong>${escapeHtml(state.courseCode || 'CSE222')}</strong></div>
+            <div class="cover-course-item"><span>Course Title:</span><strong>${escapeHtml(state.courseName || 'Object Oriented Programming Lab')}</strong></div>
           </div>
           <div class="cover-submitted-to"><div class="cover-section-title">Submitted To</div><div class="cover-faculty-name">${escapeHtml(state.facultyName || 'Faculty name')}</div><div class="cover-faculty-details">${escapeHtml(state.facultyDesignation || 'Lecturer')}<br>${escapeHtml(state.department || 'Department of CSE')}<br>Daffodil International University</div></div>
-          <div class="cover-student-block"><div class="cover-section-title">Submitted By</div><div class="cover-student-grid"><div><b>Name:</b> ${escapeHtml(state.studentName || '—')}</div><div><b>ID:</b> ${escapeHtml(state.studentId || '—')}</div><div><b>Section:</b> ${escapeHtml(state.section || '—')}</div><div><b>Semester:</b> ${escapeHtml(state.semester || '—')}</div></div></div>
-          <div class="cover-date">Date of Submission: ${escapeHtml(date)}</div>
+          <div class="cover-student-block"><div class="cover-section-title">Submitted By</div><div class="cover-student-grid"><div><b>Name:</b> ${escapeHtml(state.studentName || '—')}</div><div><b>ID:</b> ${escapeHtml(state.studentId || '—')}</div><div><b>Section:</b> ${escapeHtml(state.section || '69_')}</div><div><b>Semester:</b> ${escapeHtml(state.semester || '—')}</div><div><b>Department:</b> ${escapeHtml(state.department || 'Department of CSE')}</div><div>Daffodil International University</div></div></div>
+          <div class="cover-date"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 3v4M16.5 3v4M4 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Date of Submission: ${escapeHtml(date)}</span></div>
         </div>`;
       }
     } else if (p.type === 'code') {
       const pageContent = document.createElement('div'); pageContent.className='paper-content';
       const fam = codeCssFont(p.codeFontFamily || 'Monospace');
-      const size = Math.max(6,Math.min(12,Number(p.codeFontSize)||8));
-      pageContent.innerHTML = `<div class="problem-header"><span class="problem-label">Problem</span><span class="problem-title">${escapeHtml(p.heading || 'Problem 01')}</span></div><div class="paper-filebar"><span class="file">${escapeHtml(p.filename || 'Main.java')}</span><span class="tag">JAVA SOURCE</span></div>${p.intro ? `<p class="paper-intro">${escapeHtml(p.intro)}</p>` : ''}<pre class="paper-code" style="font-family:${fam};font-size:${Math.max(5,size*.72)}px">${previewCode(p.code || '')}</pre>${p.notes ? `<div class="paper-note">${escapeHtml(p.notes)}</div>` : ''}<div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div>`;
+      const size = Math.max(6,Math.min(12,Number(p.codeFontSize)||10));
+      pageContent.innerHTML = `<div class="paper-filebar"><span class="file">${escapeHtml(p.filename || 'Main.java')}</span><span class="tag">JAVA SOURCE</span></div><div class="problem-header"><span class="problem-title">${escapeHtml(p.heading || 'Problem 1')}</span></div>${p.intro ? `<p class="paper-intro">${escapeHtml(p.intro)}</p>` : ''}<pre class="paper-code" style="font-family:${fam};font-size:${Math.max(6,size*.82)}px">${previewCode(p.code || '')}</pre>${p.notes ? `<div class="paper-note">${escapeHtml(p.notes)}</div>` : ''}<div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div>`;
       paper.appendChild(pageContent);
     } else {
       paper.innerHTML = `<div class="paper-content"><div class="paper-kicker">LAB REPORT - ${escapeHtml(state.labReportNumber || '02')}</div><div style="height:15px"></div><h3>${escapeHtml(p.heading || 'Untitled page')}</h3><div class="paper-rule"></div><div class="paper-text-body">${escapeHtml(p.body || 'Your text will appear here. Add your algorithm, explanation, discussion, or conclusion in the editor.')}</div><div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div></div>`;
@@ -589,9 +700,13 @@
     $('previewPageType').textContent = p.type === 'cover' ? 'COVER PAGE' : p.type === 'code' ? 'JAVA SOURCE' : 'TEXT PAGE';
   }
   function renderAll() { renderPageList(); renderEditor(); renderPreview(); persist(); }
+  function nextProblemNumber() {
+    const used=state.pages.filter(pg=>pg.type==='code').map(pg=>{const m=String(pg.heading||'').match(/^Problem\s+(\d+)$/i);return m?Number(m[1]):0;});
+    return Math.max(0,...used)+1;
+  }
   function addPage(type) {
     const p = type === 'code'
-      ? {id:makeId(),type:'code',filename:'Main.java',heading:`Problem ${String(state.pages.filter(x=>x.type==='code').length + 1).padStart(2,'0')}`,intro:'',code:'',notes:'',codeFontFamily:'Monospace',codeFontSize:'8'}
+      ? {id:makeId(),type:'code',filename:'Main.java',heading:`Problem ${nextProblemNumber()}`,intro:'',code:'',notes:'',codeFontFamily:'Monospace',codeFontSize:'10'}
       : {id:makeId(),type:'text',heading:'Discussion',body:''};
     const coverIndex = state.pages.findIndex(x=>x.type==='cover');
     const selectedIndex = currentIndex();
@@ -651,22 +766,19 @@
     });
     return y;
   }
-  const pdfColors = { bg:[17,27,43], white:[232,239,251], keyword:[133,181,255], string:[159,225,177], comment:[132,149,172], number:[242,199,125], muted:[135,148,170] };
-  function colorForCodeToken(token) {
-    if (/^\/\//.test(token) || /^\/\*/.test(token)) return pdfColors.comment;
-    if (/^"/.test(token) || /^'/.test(token)) return pdfColors.string;
-    if (/^\d/.test(token)) return pdfColors.number;
-    if (/^(public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)$/.test(token)) return pdfColors.keyword;
-    return pdfColors.white;
+  const pdfColors = { bg:[17,27,43], white:[232,237,248], keyword:[255,121,198], type:[128,216,255], string:[195,232,141], comment:[132,146,166], number:[246,193,119], method:[130,170,255], annotation:[199,146,234], constant:[255,203,107], operator:[137,221,255], punctuation:[198,208,225], muted:[135,148,170] };
+  function colorForCodeToken(token, line='', endIndex=0) {
+    const cls=syntaxClass(token,line,endIndex);
+    const map={ 'tok-comment':'comment','tok-string':'string','tok-number':'number','tok-key':'keyword','tok-type':'type','tok-method':'method','tok-annotation':'annotation','tok-constant':'constant','tok-operator':'operator','tok-punctuation':'punctuation' };
+    return pdfColors[map[cls] || 'white'];
   }
-  function drawHighlightedCodeLine(doc, line, x, y, fontSize=8.5, fontFamily='Monospace') {
+  function drawHighlightedCodeLine(doc, line, x, y, fontSize=10, fontFamily='Monospace') {
     doc.setFont(codePdfFont(fontFamily),'normal'); doc.setFontSize(fontSize);
-    const rx=/(\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:public|private|protected|static|final|class|interface|enum|void|int|double|float|long|short|byte|char|boolean|String|new|return|if|else|for|while|do|switch|case|break|continue|this|super|true|false|null|try|catch|finally|throw|throws|import|package|extends|implements|instanceof|var|record|abstract|synchronized)\b|\b\d+(?:\.\d+)?\b)/g;
-    let last=0, match, cursor=x;
+    const rx=javaTokenRegex(); let last=0, match, cursor=x;
     while ((match=rx.exec(line))!==null) {
       const plain=line.slice(last,match.index);
       if (plain) { doc.setTextColor(...pdfColors.white); doc.text(plain,cursor,y); cursor += doc.getTextWidth(plain); }
-      doc.setTextColor(...colorForCodeToken(match[0])); doc.text(match[0],cursor,y); cursor += doc.getTextWidth(match[0]); last=match.index+match[0].length;
+      doc.setTextColor(...colorForCodeToken(match[0],line,rx.lastIndex)); doc.text(match[0],cursor,y); cursor += doc.getTextWidth(match[0]); last=match.index+match[0].length;
     }
     const tail=line.slice(last);
     if(tail){doc.setTextColor(...pdfColors.white);doc.text(tail,cursor,y);}
@@ -685,52 +797,53 @@
     drawGeneratedCover(doc);
   }
   function drawGeneratedCover(doc, wordmarkData=DIU_WORDMARK_DATA) {
-    // A4 white DIU cover inspired by the supplied university template.
     doc.setFillColor(255,255,255); doc.rect(0,0,210,297,'F');
     doc.setDrawColor(32,32,32); doc.setLineWidth(.45); doc.rect(10,10,190,277,'S');
-    try { doc.addImage(DIU_WATERMARK_DATA,'JPEG',66,109,78,77,'diu-watermark','FAST'); } catch(e) { /* watermark is optional */ }
-    try { doc.addImage(wordmarkData,'JPEG',31,18,148,44,'diu-wordmark','FAST'); } catch(e) { /* text fallback below */ }
+    try { doc.addImage(DIU_WATERMARK_DATA,'JPEG',66,111,78,77,'diu-watermark','FAST'); } catch(e) { /* watermark is optional */ }
+    try { doc.addImage(wordmarkData,'JPEG',31,18,148,43,'diu-wordmark','FAST'); } catch(e) { /* text fallback below */ }
+    const center=105;
     doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(41,61,100);
-    doc.text(`LAB REPORT - ${state.labReportNumber || '02'}`,105,72,{align:'center'});
-    doc.setDrawColor(41,61,100); doc.setLineWidth(.65); doc.line(77,75,133,75);
-    doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(16,24,39);
-    const titleLines=doc.splitTextToSize(state.reportTitle || REPORT_TOPIC_DEFAULT,166);
-    let y=90; titleLines.slice(0,4).forEach(line=>{doc.text(line,26,y);y+=7;});
-    y+=7;
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(17,24,39); doc.text('Course Code:',26,y);
-    doc.setFont('helvetica','normal'); doc.text(doc.splitTextToSize(state.courseCode || '—',125).slice(0,2),61,y); y+=9;
-    doc.setFont('helvetica','bold'); doc.text('Course Title:',26,y);
-    doc.setFont('helvetica','normal'); doc.text(doc.splitTextToSize(state.courseName || 'Object-Oriented Programming',125).slice(0,2),61,y); y+=16;
-    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(41,61,100);doc.text('Submitted To',105,y,{align:'center'}); y+=8;
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(20,27,42);doc.text(doc.splitTextToSize(state.facultyName || 'Faculty name',164).slice(0,2),105,y,{align:'center'}); y+=7;
+    doc.text(`LAB REPORT - ${state.labReportNumber || '02'}`,center,70,{align:'center'});
+    doc.setDrawColor(41,61,100); doc.setLineWidth(.65); doc.line(77,73,133,73);
+    doc.setFont('helvetica','bold'); doc.setFontSize(13.5); doc.setTextColor(16,24,39);
+    const titleLines=doc.splitTextToSize(state.reportTitle || REPORT_TOPIC_DEFAULT,160).slice(0,4);
+    let y=84;
+    titleLines.forEach(line=>{doc.text(line,center,y,{align:'center'});y+=6.7;});
+    y+=4;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(17,24,39);
+    doc.text(`Course Code: ${state.courseCode || 'CSE222'}`,center,y,{align:'center'}); y+=6.5;
+    const courseTitle=doc.splitTextToSize(`Course Title: ${state.courseName || 'Object Oriented Programming Lab'}`,160);
+    courseTitle.slice(0,2).forEach(line=>{doc.text(line,center,y,{align:'center'});y+=6.2;});
+    y+=4;
+    doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(41,61,100);doc.text('Submitted To',center,y,{align:'center'}); y+=7;
+    doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(20,27,42);
+    const facultyLines=doc.splitTextToSize(state.facultyName || 'Pranto Protim Choudhury (PPC)',158).slice(0,2);
+    facultyLines.forEach(line=>{doc.text(line,center,y,{align:'center'});y+=5.5;});
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(50,62,82);
-    doc.text(state.facultyDesignation || 'Lecturer',105,y,{align:'center'}); y+=5;
-    doc.text(state.department || 'Department of CSE',105,y,{align:'center'}); y+=5;
-    doc.text('Daffodil International University',105,y,{align:'center'}); y+=14;
-    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(41,61,100);doc.text('Submitted By',105,y,{align:'center'}); y+=10;
-    const left=26,right=111;
-    function coverField(x,yy,label,value,maxW=72){
-      doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(17,24,39);doc.text(label,x,yy);
-      doc.setFont('helvetica','normal');doc.text(doc.splitTextToSize(value || '—',maxW).slice(0,2),x+22,yy);
-    }
-    coverField(left,y,'Name:',state.studentName,63); coverField(right,y,'ID:',state.studentId,63); y+=10;
-    coverField(left,y,'Section:',state.section,63); coverField(right,y,'Semester:',state.semester,63); y+=9;
-    doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(17,24,39);doc.text(state.department || 'Department of CSE',26,y); y+=7;
-    doc.setFont('helvetica','bold');doc.text('Daffodil International University',26,y);
-    doc.setDrawColor(41,61,100);doc.setLineWidth(.65);doc.roundedRect(61,240,88,12,6,6,'S');
-    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(41,61,100);doc.text(`Date of Submission: ${state.submissionDate || '—'}`,105,247.4,{align:'center'});
+    [state.facultyDesignation || 'Lecturer', state.department || 'Department of CSE', 'Daffodil International University'].forEach(line=>{doc.text(line,center,y,{align:'center'});y+=5;});
+    y+=4; doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(41,61,100);doc.text('Submitted By',center,y,{align:'center'}); y+=8;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(17,24,39);
+    const studentLines=[`Name: ${state.studentName || '—'}`,`ID: ${state.studentId || '—'}`,`Section: ${state.section || '69_'}`,`Semester: ${state.semester || '—'}`,state.department || 'Department of CSE','Daffodil International University'];
+    studentLines.forEach(line=>{ const lines=doc.splitTextToSize(line,158).slice(0,2); lines.forEach(part=>{doc.text(part,center,y,{align:'center'});y+=5.2;}); });
+    // Calendar icon and submission date badge.
+    const dateText=`Date of Submission: ${displayDate(state.submissionDate)}`;
+    doc.setFont('helvetica','bold');doc.setFontSize(10);const pillW=Math.min(105,doc.getTextWidth(dateText)+17),pillX=center-pillW/2,pillY=Math.min(260,Math.max(232,y+13));
+    doc.setDrawColor(41,61,100);doc.setLineWidth(.6);doc.roundedRect(pillX,pillY,pillW,12,6,6,'S');
+    const ix=pillX+4,iy=pillY+3.3;doc.setDrawColor(41,61,100);doc.setLineWidth(.45);doc.roundedRect(ix,iy,5,5,0.5,0.5,'S');doc.line(ix,iy+1.7,ix+5,iy+1.7);doc.line(ix+1.4,iy-.8,ix+1.4,iy+.7);doc.line(ix+3.6,iy-.8,ix+3.6,iy+.7);
+    doc.setTextColor(41,61,100);doc.text(dateText,center+3,pillY+7.6,{align:'center'});
   }
   function addDocumentHeader(doc, p, continuation=false) {
     const m=16, w=178;
+    doc.setFillColor(17,27,43); doc.roundedRect(m,11,w,11,2,2,'F');
+    doc.setFont(codePdfFont(p.codeFontFamily || 'Monospace'),'normal');doc.setFontSize(9);doc.setTextColor(242,246,255);
+    doc.text(p.filename || 'Main.java',m+5,18.1);
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(155,171,255);doc.text(continuation?'CONTINUED':'JAVA SOURCE',m+w-5,18.0,{align:'right'});
     doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(23,34,55);
-    const problem = continuation ? `${p.heading || 'Problem'} · continued` : (p.heading || 'Problem 01');
+    const problem = continuation ? `${p.heading || 'Problem 1'} · continued` : (p.heading || 'Problem 1');
     const problemLines=doc.splitTextToSize(problem,w);
-    doc.text(problemLines.slice(0,1),m,14);
-    doc.setFillColor(17,27,43); doc.roundedRect(m,20,w,11,2,2,'F');
-    doc.setFont(codePdfFont(p.codeFontFamily || 'Monospace'),'normal');doc.setFontSize(8.5);doc.setTextColor(242,246,255);doc.text(p.filename || 'Main.java',m+5,27.1);
-    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(155,171,255);doc.text(continuation?'CONTINUED':'JAVA SOURCE',m+w-5,27.0,{align:'right'});
-    doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(m,35,m+w,35);
-    return 43;
+    doc.text(problemLines.slice(0,1),m,31);
+    doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(m,36,m+w,36);
+    return 44;
   }
   function drawCodePanelStart(doc, y) {
     doc.setFillColor(...pdfColors.bg); doc.roundedRect(16,y,178,10,2,2,'F');
@@ -760,7 +873,7 @@
     y=drawCodePanelStart(doc,y);
     const code=String(p.code||''); const rawLines=code.split('\n');
     const fontFamily=p.codeFontFamily || 'Monospace';
-    const fontSize=Math.max(6,Math.min(12,Number(p.codeFontSize)||8));
+    const fontSize=Math.max(6,Math.min(12,Number(p.codeFontSize)||10));
     const lineH=Math.max(3.5,fontSize*.58); const startX=29; const bottom=273;
     const maxCols=Math.max(38,Math.floor(90*(8/fontSize)*(fontFamily==='Sans serif'?.85:1)));
     let shownLine=0;
@@ -772,7 +885,7 @@
         if(y+lineH>bottom){doc.addPage();y=addDocumentHeader(doc,p,true);y=drawCodePanelStart(doc,y);}
         const shade=(shownLine%2===0)?[17,27,43]:[19,31,49];
         doc.setFillColor(...shade);doc.rect(16,y-3.4,178,lineH,'F');
-        doc.setFont('courier','normal');doc.setFontSize(7.2);doc.setTextColor(92,109,135);
+        doc.setFont('courier','normal');doc.setFontSize(Math.max(7.2,fontSize*.78));doc.setTextColor(116,131,153);
         doc.text(ci===0?String(li+1).padStart(2,' '):'↳',23,y-.4);
         drawHighlightedCodeLine(doc,chunks[ci],startX,y-.4,fontSize,fontFamily);y+=lineH;shownLine++;
       }
@@ -791,7 +904,7 @@
     const cover=document.createElement('section'); cover.className='print-sheet';
     if(state.coverImage){ cover.innerHTML=`<img class="print-cover-img" src="${state.coverImage}" alt="Uploaded report cover">`; }
     else {
-      cover.innerHTML=`<div class="print-cover"><img class="print-diu-wordmark" src="${DIU_WORDMARK_DATA}" alt="Daffodil International University"><div class="print-report-number">LAB REPORT - ${escapeHtml(state.labReportNumber || '02')}</div><h1>${escapeHtml(state.reportTitle || REPORT_TOPIC_DEFAULT)}</h1><div class="print-cover-sub"><b>Course Code:</b> ${escapeHtml(state.courseCode||'—')}<br><b>Course Title:</b> ${escapeHtml(state.courseName||'Object-Oriented Programming')}</div><div class="print-submit-section">Submitted To</div><div style="text-align:center;font-weight:bold;margin-top:2mm">${escapeHtml(state.facultyName||'Faculty name')}</div><div class="print-faculty-details">${escapeHtml(state.facultyDesignation||'Lecturer')}<br>${escapeHtml(state.department||'Department of CSE')}<br>Daffodil International University</div><div class="print-submit-section">Submitted By</div><div class="print-meta-grid"><div><span>Name</span><strong>${escapeHtml(state.studentName||'—')}</strong></div><div><span>ID</span><strong>${escapeHtml(state.studentId||'—')}</strong></div><div><span>Section</span><strong>${escapeHtml(state.section||'—')}</strong></div><div><span>Semester</span><strong>${escapeHtml(state.semester||'—')}</strong></div></div><div class="print-report-date">Date of Submission: ${escapeHtml(state.submissionDate||'—')}</div></div>`;
+      cover.innerHTML=`<div class="print-cover"><img class="print-diu-wordmark" src="${DIU_WORDMARK_DATA}" alt="Daffodil International University"><div class="print-report-number">LAB REPORT - ${escapeHtml(state.labReportNumber || '02')}</div><h1>${escapeHtml(state.reportTitle || REPORT_TOPIC_DEFAULT)}</h1><div class="print-cover-sub print-cover-course"><div><b>Course Code:</b> ${escapeHtml(state.courseCode||'CSE222')}</div><div><b>Course Title:</b> ${escapeHtml(state.courseName||'Object Oriented Programming Lab')}</div></div><div class="print-submit-section">Submitted To</div><div class="print-faculty-name" style="font-weight:bold;margin-top:2mm">${escapeHtml(state.facultyName||'Pranto Protim Choudhury (PPC)')}</div><div class="print-faculty-details">${escapeHtml(state.facultyDesignation||'Lecturer')}<br>${escapeHtml(state.department||'Department of CSE')}<br>Daffodil International University</div><div class="print-submit-section">Submitted By</div><div class="print-meta-grid"><div><span>Name:</span><strong>${escapeHtml(state.studentName||'—')}</strong></div><div><span>ID:</span><strong>${escapeHtml(state.studentId||'—')}</strong></div><div><span>Section:</span><strong>${escapeHtml(state.section||'69_')}</strong></div><div><span>Semester:</span><strong>${escapeHtml(state.semester||'—')}</strong></div><div><span>Department:</span><strong>${escapeHtml(state.department||'Department of CSE')}</strong></div><div><strong>Daffodil International University</strong></div></div><div class="print-report-date"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 3v4M16.5 3v4M4 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Date of Submission: ${escapeHtml(displayDate(state.submissionDate))}</span></div></div>`;
     }
     root.appendChild(cover);
     state.pages.forEach((p,index)=>{
@@ -799,8 +912,8 @@
       const sheet=document.createElement('section');sheet.className='print-sheet';
       if(p.type==='code'){
         const cssFamily = p.codeFontFamily==='Sans serif' ? 'Arial,Helvetica,sans-serif' : p.codeFontFamily==='Serif' ? 'Georgia,serif' : 'monospace';
-        sheet.style.setProperty('--print-code-font',cssFamily); sheet.style.setProperty('--print-code-size',`${Math.max(6,Math.min(12,Number(p.codeFontSize)||8))}pt`);
-        sheet.innerHTML=`<h2 class="print-problem-heading">${escapeHtml(p.heading||'Problem 01')}</h2><div class="print-filebar">${escapeHtml(p.filename||'Main.java')}</div>${p.intro?`<p class="print-intro">${escapeHtml(p.intro)}</p>`:''}<pre class="print-code">${escapeHtml(p.code||'')}</pre>${p.notes?`<div class="print-notes">${escapeHtml(p.notes)}</div>`:''}<div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
+        sheet.style.setProperty('--print-code-font',cssFamily); sheet.style.setProperty('--print-code-size',`${Math.max(6,Math.min(12,Number(p.codeFontSize)||10))}pt`);
+        sheet.innerHTML=`<div class="print-filebar">${escapeHtml(p.filename||'Main.java')}</div><h2 class="print-problem-heading">${escapeHtml(p.heading||'Problem 1')}</h2>${p.intro?`<p class="print-intro">${escapeHtml(p.intro)}</p>`:''}<pre class="print-code">${previewCode(p.code||'')}</pre>${p.notes?`<div class="print-notes">${escapeHtml(p.notes)}</div>`:''}<div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
       } else {
         sheet.innerHTML=`<div class="print-kicker">LAB REPORT - ${escapeHtml(state.labReportNumber||'02')}</div><h2>${escapeHtml(p.heading||'Untitled page')}</h2><div style="width:30mm;height:1mm;background:#293d64;margin:0 0 10mm"></div><div class="print-text-body">${escapeHtml(p.body||'')}</div><div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
       }
@@ -827,7 +940,7 @@
       const total=doc.getNumberOfPages();
       for(let i=2;i<=total;i++){
         doc.setPage(i);doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(16,283,194,283);
-        doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(145,154,171);doc.text('CODEFOLIO  ·  JAVA LAB REPORT',16,289);
+        doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(145,154,171);doc.text('JAVA LAB REPORT',16,289);
         doc.setFont('courier','normal');doc.text(`${String(i).padStart(2,'0')} / ${String(total).padStart(2,'0')}`,194,289,{align:'right'});
       }
       const filename=(`Lab-Report-${state.labReportNumber||'02'}-${state.reportTitle||'OOP-Solution'}`).trim().replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').slice(0,90)||'Lab-Report-02';

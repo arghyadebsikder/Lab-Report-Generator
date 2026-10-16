@@ -1,22 +1,25 @@
-# Codefolio — DIU Java Lab Report Studio
+# DIU Java Lab Report Studio
 
 A browser-based editor for assembling Java programming assignments and lab reports into a polished A4 PDF.
 
 ## Features
 
-- DIU-inspired white cover page based on the sample design, with the university wordmark, faint crest watermark, and a thin page border.
+- DIU-inspired white cover page based on the provided sample, with the university wordmark, faint crest watermark, and a thin page border.
 - Default cover heading: **Lab Report - 02**.
-- Default report topic: **Summer -26 & Fall - 25 OOP Mid Term Question Solution Using JAVA**. Both the report number and topic are editable. The cover does not use an “Experiment Name” label.
+- Default report topic: **Summer -26 & Fall - 25 OOP Mid Term Question Solution Using JAVA**. The report number and title are editable; the cover does not use an “Experiment Name” label.
+- Default course title **Object Oriented Programming Lab**, course code **CSE222**, and section **69_**.
+- Submission date field with a native calendar picker and a calendar icon beside the date on the designed cover.
 - Optional upload of an existing cover page (PNG, JPG, or WebP).
-- Java source pages with an editable problem heading and editable filename. Every new code page starts as `Main.java`.
-- Adjustable code font family (Monospace, Sans serif, Serif) and font size (6–12 pt), reflected in the live preview and PDF export.
+- Java source pages with an editable problem heading and filename. Every new code page starts as `Main.java` and **Problem 1**, then increments for additional code pages.
+- Colorful Java syntax highlighting in the editor, page preview, and exported output, including keywords, types, strings, comments, numbers, methods, annotations, constants, and operators.
+- Adjustable code font family (Monospace, Sans serif, Serif) and font size (6–12 pt), with a default of **10 pt**.
 - Separate text pages for algorithms, discussions, output explanations, and conclusions.
 - Page selection, move up/down, duplicate, and delete controls. The cover remains fixed as page one.
 - Live A4 preview and browser-local autosave when browser storage is available.
 
 ## Open locally
 
-1. Extract the ZIP.
+1. Extract the ZIP archive.
 2. Open `index.html` in Chrome or Edge.
 3. Edit the cover details, paste Java source code, and add, move, duplicate, or delete pages.
 4. Select **Export PDF**.
