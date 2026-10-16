@@ -194,7 +194,7 @@
       body { background:white; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
       .app-shell,.toast { display:none !important; }
       .print-report { display:block !important; }
-      .print-sheet { width:210mm; min-height:297mm; padding:17mm; page-break-after:always; break-after:page; position:relative; color:#172033; background:#fff; overflow:visible; }
+      .print-sheet { width:210mm; min-height:297mm; padding:17mm; page-break-after:always; break-after:page; position:relative; color:#172033; background:#fff; overflow:visible; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
       .print-sheet:last-child { page-break-after:auto; break-after:auto; }
       .print-cover { min-height:297mm; margin:-17mm; padding:24mm 22mm; background:#101827; color:#fff; position:relative; }
       .print-cover h1 { font-size:30pt;line-height:1.1;max-width:155mm;margin:24mm 0 7mm; }
@@ -206,7 +206,10 @@
       .print-filebar { background:#111b2b;color:#f4f7ff;padding:4mm 5mm;font:9pt 'DM Mono',monospace;margin-bottom:8mm; }
       .print-sheet h2 { font-size:22pt;line-height:1.2;margin:0 0 5mm; }
       .print-intro { font-size:10pt;line-height:1.6;color:#58657b;white-space:pre-wrap;margin:0 0 7mm; }
-      .print-code { background:#111b2b;color:#e5ecfa;border-radius:2mm;padding:5mm;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:7.5pt/1.55 'DM Mono',monospace; }
+      .print-code { background:#111b2b;color:#e5ecfa;border-radius:2mm;padding:5mm;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:7.5pt/1.55 'DM Mono',monospace; break-inside:auto; page-break-inside:auto; }
+      .print-sheet:has(.print-code) { height:auto; break-inside:auto; page-break-inside:auto; }
+      .print-sheet .print-code { display:block; max-height:none; overflow:visible; }
+      .print-problem-heading { break-after:avoid; page-break-after:avoid; }
       .print-notes { margin-top:8mm;padding:4mm 0 4mm 4mm;border-left:2px solid #727df1;color:#536078;font-size:9pt;line-height:1.6;white-space:pre-wrap; }
       .print-text-body { white-space:pre-wrap;font-size:11pt;line-height:1.8;color:#4d5b70;overflow-wrap:anywhere; }
       .print-kicker { color:#7b879d;text-transform:uppercase;letter-spacing:1pt;font-size:8pt;font-weight:bold;margin-bottom:9mm; }
@@ -246,9 +249,9 @@
     .cover-preview .cover-course-item span { font-weight:800; color:#111827; }
     .cover-preview .cover-course-item strong { font-weight:500; color:#1e293b; overflow-wrap:anywhere; }
     .cover-preview .cover-submitted-to { position:relative; z-index:1; margin:24px 0 30px; text-align:center; }
-    .cover-preview .cover-section-title { width:max-content; max-width:100%; margin:0 auto 6px; color:#293d64; font-size:11px; font-weight:800; border-bottom:1px solid #293d64; padding-bottom:2px; }
-    .cover-preview .cover-faculty-name { font-size:9px; font-weight:800; line-height:1.35; overflow-wrap:anywhere; }
-    .cover-preview .cover-faculty-details { margin-top:3px; color:#384458; font-size:7.5px; line-height:1.5; }
+    .cover-preview .cover-section-title { width:max-content; max-width:100%; margin:0 auto 6px; color:#293d64; font-size:12px; font-weight:800; border-bottom:1px solid #293d64; padding-bottom:2px; }
+    .cover-preview .cover-faculty-name { font-size:10px; font-weight:800; line-height:1.35; overflow-wrap:anywhere; }
+    .cover-preview .cover-faculty-details { margin-top:3px; color:#384458; font-size:8.5px; line-height:1.5; }
     .cover-preview .cover-student-block { position:relative; z-index:1; margin-top:18px; }
     .cover-preview .cover-student-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 14px; font-size:8px; line-height:1.35; }
     .cover-preview .cover-student-grid div { overflow-wrap:anywhere; }
@@ -311,15 +314,26 @@
     .cover-preview { padding:7.5% 8%; }
     .cover-preview .cover-brand-image { width:91%; height:80px; margin:0 auto 12px; }
     .cover-preview .cover-report-label { margin:0 auto 13px; }
-    .cover-preview .cover-title { width:100%; margin:0 auto 15px; text-align:center; font-size:14px; line-height:1.32; }
+    .cover-preview .cover-title { width:100%; margin:0 auto 15px; text-align:center; font-size:16px; line-height:1.32; }
     .cover-preview .cover-course { align-items:center; gap:6px; margin-bottom:14px; }
-    .cover-preview .cover-course-item { display:block; text-align:center; font-size:8px; }
+    .cover-preview .cover-course-item { display:block; text-align:center; font-size:9px; }
     .cover-preview .cover-course-item span { margin-right:4px; }
     .cover-preview .cover-submitted-to { margin:13px 0 16px; text-align:center; }
     .cover-preview .cover-student-block { margin-top:12px; text-align:center; }
-    .cover-preview .cover-student-grid { grid-template-columns:1fr; gap:5px; justify-items:center; text-align:center; font-size:8px; line-height:1.38; }
-    .cover-preview .cover-date { display:flex; align-items:center; justify-content:center; gap:5px; margin:19px auto 0; }
+    .cover-preview .cover-student-grid { grid-template-columns:1fr; gap:5px; justify-items:center; text-align:center; font-size:9px; line-height:1.38; }
+    .cover-preview .cover-date { display:flex; align-items:center; justify-content:center; gap:5px; margin:19px auto 0; font-size:9px; }
     .cover-preview .cover-date svg { display:block; width:11px; height:11px; flex:none; }
+    .site-credit { text-align:center; padding:18px 16px 28px; color:#8b95a8; font-size:12px; font-weight:600; letter-spacing:.1px; }
+    .site-credit .heart { color:#e94f72; }
+    .paper-multipage-badge { position:absolute; z-index:6; right:8%; bottom:8.8%; display:flex; align-items:center; gap:6px; max-width:84%; padding:7px 10px; border:1px solid #dfe4f0; border-radius:9px; background:rgba(255,255,255,.97); color:#3544b3; box-shadow:0 4px 15px rgba(22,31,52,.13); font-size:8px; line-height:1.2; font-weight:800; letter-spacing:.25px; }
+    .paper-multipage-badge svg { width:13px; height:13px; flex:none; }
+    .paper-multipage-badge span { overflow-wrap:anywhere; }
+    .paper-code.preview-clamped { overflow:hidden; white-space:normal; overflow-wrap:normal; word-break:normal; }
+    .paper-code .code-preview-row { display:flex; align-items:baseline; width:100%; max-width:100%; height:1.72em; line-height:1.72; overflow:hidden; white-space:pre; }
+    .paper-code .code-preview-row .ln { flex:0 0 24px; width:24px; margin-right:8px; padding-right:5px; }
+    .paper-code .code-preview-source { display:block; flex:1 1 0; min-width:0; overflow:hidden; white-space:pre; }
+    .preview-foot .status { max-width:68%; line-height:1.4; }
+
     .print-cover { text-align:center; }
     .print-cover .print-diu-wordmark { display:block; }
     .print-cover .print-report-number { text-align:center; }
@@ -344,7 +358,80 @@
       .cover-preview .cover-brand-image { height:70px; }
     }
 
-  </style>
+  
+
+    /* Theme controls and print-safe code panels */
+    .problem-header { padding-left:12px; padding-right:12px; }
+    .problem-header .problem-title { padding-left:2px; padding-right:2px; }
+    .paper-filebar { padding-left:14px; padding-right:14px; border-radius:7px; }
+    .paper-code { border-radius:8px; padding:14px 13px; }
+    .paper-code .ln { margin-right:10px; }
+    .code-editor-wrap { --editor-bg:#111b2b; --editor-fg:#e6edf8; --editor-caret:#f5f7ff; --editor-border:#1b2941; background:var(--editor-bg); border-color:var(--editor-border); transition:background .15s ease,border-color .15s ease; }
+    .code-editor-wrap .code-highlight { color:var(--editor-fg); }
+    .code-editor-wrap .code-input { caret-color:var(--editor-caret); }
+    .code-editor-wrap.theme-light { --editor-bg:#fbfcff; --editor-fg:#1e293b; --editor-caret:#1e293b; --editor-border:#cbd5e1; }
+    .code-editor-wrap.theme-light .code-input { caret-color:#1e293b; }
+    .code-editor-wrap.theme-light .code-input::placeholder { color:#7c8aa0; -webkit-text-fill-color:#7c8aa0; }
+    .code-editor-wrap.theme-light .tok-key { color:#b42367; }
+    .code-editor-wrap.theme-light .tok-type { color:#0369a1; }
+    .code-editor-wrap.theme-light .tok-string { color:#287a41; }
+    .code-editor-wrap.theme-light .tok-comment { color:#65758b; }
+    .code-editor-wrap.theme-light .tok-number { color:#a15c00; }
+    .code-editor-wrap.theme-light .tok-method { color:#334bd1; }
+    .code-editor-wrap.theme-light .tok-annotation { color:#7e22ce; }
+    .code-editor-wrap.theme-light .tok-constant { color:#946200; }
+    .code-editor-wrap.theme-light .tok-operator { color:#0369a1; }
+    .code-editor-wrap.theme-light .tok-punctuation { color:#334155; }
+    .code-theme-light .paper-filebar { color:#1e293b; background:#edf2f7; border:1px solid #d6deea; }
+    .code-theme-light .paper-filebar .tag { color:#465b88; }
+    .code-theme-light .paper-code { color:#1e293b; background:#f8fafc; border:1px solid #d6deea; box-shadow:none; }
+    .code-theme-light .paper-code .ln { color:#64748b; border-right-color:#d6deea; }
+    .code-theme-light .paper-code .tok-key { color:#b42367; }
+    .code-theme-light .paper-code .tok-type { color:#0369a1; }
+    .code-theme-light .paper-code .tok-string { color:#287a41; }
+    .code-theme-light .paper-code .tok-comment { color:#65758b; }
+    .code-theme-light .paper-code .tok-number { color:#a15c00; }
+    .code-theme-light .paper-code .tok-method { color:#334bd1; }
+    .code-theme-light .paper-code .tok-annotation { color:#7e22ce; }
+    .code-theme-light .paper-code .tok-constant { color:#946200; }
+    .code-theme-light .paper-code .tok-operator { color:#0369a1; }
+    .code-theme-light .paper-code .tok-punctuation { color:#334155; }
+    .code-theme-controls, .code-theme-controls .field { min-width:0; }
+    .code-theme-controls { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .theme-switch { display:flex; gap:5px; padding:4px; border:1px solid #e0e5ee; border-radius:10px; background:#f8fafc; min-height:41px; }
+    .theme-option { border:1px solid transparent; background:transparent; color:#64748b; flex:1; min-width:0; display:flex; justify-content:center; align-items:center; gap:6px; border-radius:7px; font-size:11px; font-weight:700; padding:7px 9px; }
+    .theme-option:hover { background:#eef2ff; color:#3545ad; }
+    .theme-option.active { background:#fff; color:#273449; border-color:#dbe1ec; box-shadow:0 1px 3px rgba(20,31,52,.07); }
+    .theme-swatch { display:inline-block; width:13px; height:13px; border-radius:4px; border:1px solid #94a3b8; flex:none; }
+    .dark-swatch { background:#111b2b; border-color:#334155; }
+    .light-swatch { background:#fff; }
+    .pdf-theme-option { display:flex; align-items:flex-start; gap:9px; min-height:41px; padding:8px 10px; border:1px solid #e0e5ee; border-radius:10px; background:#fff; cursor:pointer; }
+    .pdf-theme-option input { width:15px; height:15px; margin:2px 0 0; accent-color:#5965e8; flex:none; }
+    .pdf-theme-option span { display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .pdf-theme-option strong { color:#2d384d; font-size:11px; line-height:1.3; }
+    .pdf-theme-option small { color:#778399; font-size:9px; line-height:1.45; font-weight:500; }
+    .print-problem-heading { padding-left:5mm !important; padding-right:5mm !important; }
+    .print-filebar { padding:4mm 6mm !important; border-radius:2.5mm !important; }
+    .print-code { box-sizing:border-box; border-radius:2.5mm; padding:5mm 6mm !important; border:.25mm solid #334155; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+    .print-code.theme-dark { background:#111b2b !important; color:#e8edf8 !important; }
+    .print-code.theme-light { background:#f8fafc !important; color:#1e293b !important; border-color:#cbd5e1; }
+    .print-code.theme-light .ln { color:#64748b !important; border-right-color:#cbd5e1 !important; }
+    .print-code.theme-light .tok-key { color:#b42367 !important; }
+    .print-code.theme-light .tok-type { color:#0369a1 !important; }
+    .print-code.theme-light .tok-string { color:#287a41 !important; }
+    .print-code.theme-light .tok-comment { color:#65758b !important; }
+    .print-code.theme-light .tok-number { color:#a15c00 !important; }
+    .print-code.theme-light .tok-method { color:#334bd1 !important; }
+    .print-code.theme-light .tok-annotation { color:#7e22ce !important; }
+    .print-code.theme-light .tok-constant { color:#946200 !important; }
+    .print-code.theme-light .tok-operator { color:#0369a1 !important; }
+    .print-code.theme-light .tok-punctuation { color:#334155 !important; }
+    .print-cover h1 { font-size:18pt !important; line-height:1.22 !important; }
+    .print-cover .print-cover-sub { font-size:10.5pt !important; }
+    .cover-preview .cover-title { font-size:16px; }
+    @media (max-width:760px) { .code-theme-controls { grid-template-columns:1fr; } }
+    @media print { .print-code { margin-top:2mm; } }
+</style>
 </head>
 <body>
 <div class="app-shell">
@@ -393,6 +480,7 @@
       </div>
     </aside>
   </main>
+  <footer class="site-credit">Made with <span class="heart" aria-label="love">❤️</span> by Arghya</footer>
 </div>
 <input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" />
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -435,7 +523,7 @@
     coverImageName: '',
     pages: [
       { id: makeId(), type:'cover', title:'Cover page' },
-      { id: makeId(), type:'code', filename:'Main.java', heading:'Problem 1', intro:'', code:starterCode, notes:'', codeFontFamily:'Monospace', codeFontSize:'10' }
+      { id: makeId(), type:'code', filename:'Main.java', heading:'Problem 1', intro:'', code:starterCode, notes:'', codeFontFamily:'Monospace', codeFontSize:'10', editorTheme:'dark', pdfDarkTheme:true }
     ],
     selectedId: null
   });
@@ -462,6 +550,8 @@
       if (!pg.codeFontFamily) pg.codeFontFamily = 'Monospace';
       if (!pg.codeFontSize || pg.codeFontSize === '8') pg.codeFontSize = '10';
       if (pg.heading === 'Problem 01') pg.heading = 'Problem 1';
+      if (!pg.editorTheme) pg.editorTheme = 'dark';
+      if (typeof pg.pdfDarkTheme !== 'boolean') pg.pdfDarkTheme = true;
     }
   });
   if (!state.pages.some(p => p.type === 'cover')) state.pages.unshift({id:makeId(), type:'cover', title:'Cover page'});
@@ -506,7 +596,8 @@
       const btn = document.createElement('button');
       btn.className = 'page-nav-item'; btn.type = 'button';
       const miniClass = p.type === 'cover' ? 'cover-mini' : (p.type === 'code' ? 'code-mini' : 'text-mini');
-      const typeName = p.type === 'cover' ? `DIU COVER · PAGE ${index+1}` : p.type === 'code' ? `${p.filename || 'Main.java'} · PAGE ${index+1}` : `TEXT PAGE · PAGE ${index+1}`;
+      const codeStats = p.type === 'code' ? codePaginationStats(p) : null;
+      const typeName = p.type === 'cover' ? `DIU COVER · PAGE ${index+1}` : p.type === 'code' ? `${p.filename || 'Main.java'} · ${codeStats.pages > 1 ? `${codeStats.pages} PDF PAGES · ` : ''}PAGE ${index+1}` : `TEXT PAGE · PAGE ${index+1}`;
       btn.innerHTML = `<span class="mini-page ${miniClass}"><span></span><span></span><span></span><span></span></span><span class="page-nav-label"><span class="page-nav-title">${escapeHtml(pageLabel(p))}</span><span class="page-nav-type">${escapeHtml(typeName)}</span></span>`;
       btn.addEventListener('click', () => { state.selectedId = p.id; renderAll(); });
       row.appendChild(btn);
@@ -543,13 +634,17 @@
     document.querySelectorAll('[data-page-key]').forEach(el => {
       const update = e => {
         const p = currentPage(); if (!p) return;
-        p[e.target.dataset.pageKey] = e.target.value;
-        if (p.type === 'code' && ['codeFontFamily','codeFontSize','code'].includes(e.target.dataset.pageKey)) updateCodeEditorHighlight();
-        if (e.target.dataset.pageKey === 'heading') $('editorTitle').textContent = p.heading || (p.type==='code' ? 'Java code page' : 'Text page');
+        const key = e.target.dataset.pageKey;
+        p[key] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        if (p.type === 'code' && ['codeFontFamily','codeFontSize','code','editorTheme'].includes(key)) updateCodeEditorHighlight();
+        if (key === 'heading') $('editorTitle').textContent = p.heading || (p.type==='code' ? 'Java code page' : 'Text page');
         persist(); renderPageList(); renderPreview();
       };
-      el.addEventListener('input', update);
-      if (el.tagName === 'SELECT') el.addEventListener('change', update);
+      if (el.type === 'checkbox') el.addEventListener('change', update);
+      else {
+        el.addEventListener('input', update);
+        if (el.tagName === 'SELECT') el.addEventListener('change', update);
+      }
     });
   }
   function renderEditor() {
@@ -588,6 +683,7 @@
       title.textContent = p.heading || 'Java code page'; subtitle.textContent = 'Problem heading, file name, code style and source code.';
       const family = p.codeFontFamily || 'Monospace';
       const size = String(p.codeFontSize || '10');
+      const editorTheme = p.editorTheme || 'dark';
       content.innerHTML = `
         ${pageInputField('Problem number / heading','heading','Problem 1',{hint:'Shown at the top of the page'})}
         ${pageInputField('Java file name','filename','Main.java',{mono:true,hint:'Editable · defaults to Main.java'})}
@@ -595,11 +691,25 @@
           <div class="field"><label for="page_codeFontFamily">Code font</label><select id="page_codeFontFamily" data-page-key="codeFontFamily"><option ${family==='Monospace'?'selected':''}>Monospace</option><option ${family==='Sans serif'?'selected':''}>Sans serif</option><option ${family==='Serif'?'selected':''}>Serif</option></select></div>
           <div class="field"><label for="page_codeFontSize">Font size</label><select id="page_codeFontSize" data-page-key="codeFontSize">${['6','7','8','9','10','11','12'].map(v=>`<option value="${v}" ${size===v?'selected':''}>${v} pt</option>`).join('')}</select></div>
         </div>
+        <div class="code-theme-controls">
+          <div class="field"><label>Editor theme</label><div class="theme-switch" role="group" aria-label="Code editor theme"><button type="button" class="theme-option ${editorTheme==='dark'?'active':''}" data-editor-theme="dark" aria-pressed="${editorTheme==='dark'}"><span class="theme-swatch dark-swatch"></span>Dark</button><button type="button" class="theme-option ${editorTheme==='light'?'active':''}" data-editor-theme="light" aria-pressed="${editorTheme==='light'}"><span class="theme-swatch light-swatch"></span>Light</button></div></div>
+          <div class="field"><label>PDF appearance</label><label class="pdf-theme-option" for="page_pdfDarkTheme"><input id="page_pdfDarkTheme" type="checkbox" data-page-key="pdfDarkTheme" ${p.pdfDarkTheme !== false ? 'checked' : ''}><span><strong>Dark code in PDF</strong><small>Turn off for a white, printer-friendly code block.</small></span></label></div>
+        </div>
         ${pageTextField('Problem statement / introduction','intro','Briefly describe what the program should do.',{rows:3,hint:'Optional'})}
         <div class="editor-divider"></div>
-        <div class="field"><label for="page_code">Java source code <span class="optional">Paste your complete program</span></label><div class="code-editor-wrap"><pre id="page_code_highlight" class="code-highlight" aria-hidden="true"></pre><textarea id="page_code" data-page-key="code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your Java code here...">${escapeHtml(p.code || '')}</textarea></div><div class="small-note">Syntax highlighting appears as you type. Code font and size apply to the editor, page preview and exported PDF.</div></div>
+        <div class="field"><label for="page_code">Java source code <span class="optional">Paste your complete program</span></label><div class="code-editor-wrap"><pre id="page_code_highlight" class="code-highlight" aria-hidden="true"></pre><textarea id="page_code" data-page-key="code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your Java code here...">${escapeHtml(p.code || '')}</textarea></div><div class="small-note">Syntax highlighting appears as you type. Long source code flows across PDF pages automatically. The live preview shows one A4 page with a page-count indicator.</div></div>
         ${pageTextField('Notes / explanation','notes','Optional: explain the logic, output, or important points.',{rows:3,hint:'Optional'})}
       `;
+      content.querySelectorAll('[data-editor-theme]').forEach(button => button.addEventListener('click', () => {
+        const page = currentPage();
+        page.editorTheme = button.dataset.editorTheme;
+        content.querySelectorAll('[data-editor-theme]').forEach(option => {
+          const active = option.dataset.editorTheme === page.editorTheme;
+          option.classList.toggle('active', active);
+          option.setAttribute('aria-pressed', String(active));
+        });
+        updateCodeEditorHighlight(); persist();
+      }));
       const code = $('page_code');
       updateCodeEditorHighlight();
       code.addEventListener('input', updateCodeEditorHighlight);
@@ -650,6 +760,8 @@
     const p=currentPage();
     const family=codeCssFont(p?.codeFontFamily || 'Monospace');
     const size=Math.max(6,Math.min(12,Number(p?.codeFontSize)||10));
+    const wrap=editor.closest('.code-editor-wrap');
+    if (wrap) { wrap.classList.toggle('theme-light', p?.editorTheme === 'light'); wrap.classList.toggle('theme-dark', p?.editorTheme !== 'light'); }
     editor.style.fontFamily=family; editor.style.fontSize=`${size}pt`;
     highlight.style.fontFamily=family; highlight.style.fontSize=`${size}pt`;
     highlight.innerHTML=editor.value.split('\n').map(line=>highlightLine(line.replace(/\t/g,'    '))).join('\n') + (editor.value.endsWith('\n') ? ' ' : '');
@@ -663,6 +775,38 @@
   }
   function previewCode(code) {
     return (code || '').split('\n').map((line, i) => `<span class="ln">${String(i+1).padStart(2,' ')}</span>${highlightLine(line.replace(/\t/g,'    '))}`).join('\n');
+  }
+  function previewCodeSinglePage(code) {
+    return (code || '').split('\n').map((line, i) => `<span class="code-preview-row"><span class="ln">${String(i+1).padStart(2,' ')}</span><span class="code-preview-source">${highlightLine(line.replace(/\t/g,'    '))}</span></span>`).join('');
+  }
+  function codePaginationStats(p) {
+    const fontSize = Math.max(6, Math.min(12, Number(p.codeFontSize) || 10));
+    const fontFamily = p.codeFontFamily || 'Monospace';
+    const maxCols = Math.max(38, Math.floor(90 * (8 / fontSize) * (fontFamily === 'Monospace' ? 1 : .64)));
+    const rawLines = String(p.code || '').split('\n');
+    const rowCount = rawLines.reduce((total, sourceLine) => {
+      const line = sourceLine.replace(/\t/g, '    ');
+      return total + (line.length ? Math.ceil(line.length / maxCols) : 1);
+    }, 0);
+    const lineHeight = Math.max(4.1, fontSize * .60);
+    const heading = String(p.heading || 'Problem 1');
+    const firstHeadingLines = Math.max(1, Math.ceil(heading.length / 90));
+    const continuationHeadingLines = Math.max(1, Math.ceil((heading + ' · continued').length / 90));
+    const headerEnd = headingLines => 34.5 + headingLines * 4.8;
+    let firstY = headerEnd(firstHeadingLines);
+    if (p.intro) {
+      const paragraphs = String(p.intro).split('\n');
+      let introLines = 0;
+      paragraphs.forEach(part => { introLines += part.length ? Math.max(1, Math.ceil(part.length / 135)) : 1; });
+      firstY += introLines * 4.7 + Math.max(0, paragraphs.length - 1) * 1.65 + 5;
+    }
+    firstY += 15; // source-code panel heading
+    const continuationY = headerEnd(continuationHeadingLines) + 15;
+    const firstCapacity = Math.max(1, Math.floor((273 - firstY) / lineHeight));
+    const continuationCapacity = Math.max(1, Math.floor((273 - continuationY) / lineHeight));
+    let pages = 1;
+    if (rowCount > firstCapacity) pages += Math.ceil((rowCount - firstCapacity) / continuationCapacity);
+    return { pages, rows: rowCount, maxCols, lineHeight, firstCapacity, continuationCapacity };
   }
   function renderPreview() {
     const p = currentPage(); const paper = $('paper');
@@ -689,15 +833,30 @@
         </div>`;
       }
     } else if (p.type === 'code') {
-      const pageContent = document.createElement('div'); pageContent.className='paper-content';
+      const pageContent = document.createElement('div'); pageContent.className='paper-content ' + (p.pdfDarkTheme !== false ? 'code-theme-dark' : 'code-theme-light');
       const fam = codeCssFont(p.codeFontFamily || 'Monospace');
       const size = Math.max(6,Math.min(12,Number(p.codeFontSize)||10));
-      pageContent.innerHTML = `<div class="paper-filebar"><span class="file">${escapeHtml(p.filename || 'Main.java')}</span><span class="tag">JAVA SOURCE</span></div><div class="problem-header"><span class="problem-title">${escapeHtml(p.heading || 'Problem 1')}</span></div>${p.intro ? `<p class="paper-intro">${escapeHtml(p.intro)}</p>` : ''}<pre class="paper-code" style="font-family:${fam};font-size:${Math.max(6,size*.82)}px">${previewCode(p.code || '')}</pre>${p.notes ? `<div class="paper-note">${escapeHtml(p.notes)}</div>` : ''}<div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div>`;
+      const stats = codePaginationStats(p);
+      const previewCodeHeight = Math.max(145, Math.round(paper.clientHeight * .59));
+      pageContent.innerHTML = `<div class="problem-header"><span class="problem-title">${escapeHtml(p.heading || 'Problem 1')}</span></div><div class="paper-filebar"><span class="file">${escapeHtml(p.filename || 'Main.java')}</span><span class="tag">JAVA SOURCE</span></div>${p.intro ? `<p class="paper-intro">${escapeHtml(p.intro)}</p>` : ''}<pre class="paper-code preview-clamped" style="font-family:${fam};font-size:${Math.max(6,size*.82)}px;max-height:${previewCodeHeight}px">${previewCodeSinglePage(p.code || '')}</pre>${p.notes ? `<div class="paper-note">${escapeHtml(p.notes)}</div>` : ''}<div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div>`;
       paper.appendChild(pageContent);
+      const pageBadge = document.createElement('div');
+      pageBadge.className = 'paper-multipage-badge';
+      pageBadge.innerHTML = `${smallIcon('<rect x="4" y="3" width="12" height="15" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7h4M8 10h4M8 13h4M8 18v2h12V7h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>')}<span>${stats.pages > 1 ? `MULTI-PAGE PDF · ${stats.pages} PAGES` : '1 PDF PAGE'}</span>`;
+      paper.appendChild(pageBadge);
     } else {
       paper.innerHTML = `<div class="paper-content"><div class="paper-kicker">LAB REPORT - ${escapeHtml(state.labReportNumber || '02')}</div><div style="height:15px"></div><h3>${escapeHtml(p.heading || 'Untitled page')}</h3><div class="paper-rule"></div><div class="paper-text-body">${escapeHtml(p.body || 'Your text will appear here. Add your algorithm, explanation, discussion, or conclusion in the editor.')}</div><div class="paper-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${currentIndex()+1}</span></div></div>`;
     }
-    $('previewPageType').textContent = p.type === 'cover' ? 'COVER PAGE' : p.type === 'code' ? 'JAVA SOURCE' : 'TEXT PAGE';
+    if (p.type === 'code') {
+      const stats = codePaginationStats(p);
+      $('previewPageType').textContent = stats.pages > 1 ? `JAVA SOURCE · ${stats.pages} PDF PAGES` : 'JAVA SOURCE · 1 PDF PAGE';
+      const status = document.querySelector('.preview-foot .status');
+      if (status) status.textContent = stats.pages > 1 ? `Showing one page · source continues across ${stats.pages} PDF pages` : 'Preview is up to date';
+    } else {
+      $('previewPageType').textContent = p.type === 'cover' ? 'COVER PAGE' : 'TEXT PAGE';
+      const status = document.querySelector('.preview-foot .status');
+      if (status) status.textContent = 'Preview is up to date';
+    }
   }
   function renderAll() { renderPageList(); renderEditor(); renderPreview(); persist(); }
   function nextProblemNumber() {
@@ -706,12 +865,10 @@
   }
   function addPage(type) {
     const p = type === 'code'
-      ? {id:makeId(),type:'code',filename:'Main.java',heading:`Problem ${nextProblemNumber()}`,intro:'',code:'',notes:'',codeFontFamily:'Monospace',codeFontSize:'10'}
+      ? {id:makeId(),type:'code',filename:'Main.java',heading:`Problem ${nextProblemNumber()}`,intro:'',code:'',notes:'',codeFontFamily:'Monospace',codeFontSize:'10',editorTheme:'dark',pdfDarkTheme:true}
       : {id:makeId(),type:'text',heading:'Discussion',body:''};
-    const coverIndex = state.pages.findIndex(x=>x.type==='cover');
-    const selectedIndex = currentIndex();
-    const insertAt = selectedIndex === coverIndex ? state.pages.length : Math.min(selectedIndex+1, state.pages.length);
-    state.pages.splice(insertAt,0,p); state.selectedId=p.id; renderAll(); showToast(type==='code'?'Code page added.':'Text page added.');
+    // New pages are always appended at the bottom, regardless of current selection.
+    state.pages.push(p); state.selectedId=p.id; renderAll(); showToast(type==='code'?'Code page added at the bottom.':'Text page added at the bottom.');
   }
   function doPageAction(action, targetId=null) {
     let idx = targetId ? state.pages.findIndex(pg=>pg.id===targetId) : currentIndex();
@@ -727,7 +884,7 @@
       const clone=JSON.parse(JSON.stringify(p)); clone.id=makeId();
       if (clone.type==='code') clone.heading=(p.heading || 'Problem')+' (copy)';
       else clone.heading=(p.heading || 'Text page')+' (copy)';
-      state.pages.splice(idx+1,0,clone); state.selectedId=clone.id; showToast('Page duplicated.');
+      state.pages.push(clone); state.selectedId=clone.id; showToast('Duplicate added at the bottom.');
     } else if (action==='delete') {
       // Keep the DIU cover page fixed as page one, but let all content pages be deleted directly.
       state.pages.splice(idx,1);
@@ -766,22 +923,28 @@
     });
     return y;
   }
-  const pdfColors = { bg:[17,27,43], white:[232,237,248], keyword:[255,121,198], type:[128,216,255], string:[195,232,141], comment:[132,146,166], number:[246,193,119], method:[130,170,255], annotation:[199,146,234], constant:[255,203,107], operator:[137,221,255], punctuation:[198,208,225], muted:[135,148,170] };
-  function colorForCodeToken(token, line='', endIndex=0) {
+  const pdfPalettes = {
+    dark: { bg:[17,27,43], rowA:[17,27,43], rowB:[20,32,50], foreground:[232,237,248], headerBg:[17,27,43], headerText:[242,246,255], tag:[155,171,255], gutter:[133,148,170], border:[46,61,83], keyword:[255,121,198], type:[128,216,255], string:[195,232,141], comment:[160,174,194], number:[246,193,119], method:[130,170,255], annotation:[215,170,255], constant:[255,203,107], operator:[137,221,255], punctuation:[198,208,225] },
+    light: { bg:[248,250,252], rowA:[248,250,252], rowB:[241,245,249], foreground:[30,41,59], headerBg:[235,240,247], headerText:[30,41,59], tag:[71,85,145], gutter:[100,116,139], border:[210,219,231], keyword:[190,24,93], type:[3,105,161], string:[39,121,65], comment:[91,105,124], number:[161,92,0], method:[51,75,209], annotation:[126,34,206], constant:[154,103,0], operator:[3,105,161], punctuation:[51,65,85] }
+  };
+  function getPdfPalette(dark=true) { return dark ? pdfPalettes.dark : pdfPalettes.light; }
+  function colorForCodeToken(token, line='', endIndex=0, dark=true) {
+    const palette=getPdfPalette(dark);
     const cls=syntaxClass(token,line,endIndex);
     const map={ 'tok-comment':'comment','tok-string':'string','tok-number':'number','tok-key':'keyword','tok-type':'type','tok-method':'method','tok-annotation':'annotation','tok-constant':'constant','tok-operator':'operator','tok-punctuation':'punctuation' };
-    return pdfColors[map[cls] || 'white'];
+    return palette[map[cls] || 'foreground'];
   }
-  function drawHighlightedCodeLine(doc, line, x, y, fontSize=10, fontFamily='Monospace') {
+  function drawHighlightedCodeLine(doc, line, x, y, fontSize=10, fontFamily='Monospace', dark=true) {
+    const palette=getPdfPalette(dark);
     doc.setFont(codePdfFont(fontFamily),'normal'); doc.setFontSize(fontSize);
     const rx=javaTokenRegex(); let last=0, match, cursor=x;
     while ((match=rx.exec(line))!==null) {
       const plain=line.slice(last,match.index);
-      if (plain) { doc.setTextColor(...pdfColors.white); doc.text(plain,cursor,y); cursor += doc.getTextWidth(plain); }
-      doc.setTextColor(...colorForCodeToken(match[0],line,rx.lastIndex)); doc.text(match[0],cursor,y); cursor += doc.getTextWidth(match[0]); last=match.index+match[0].length;
+      if (plain) { doc.setTextColor(...palette.foreground); doc.text(plain,cursor,y); cursor += doc.getTextWidth(plain); }
+      doc.setTextColor(...colorForCodeToken(match[0],line,rx.lastIndex,dark)); doc.text(match[0],cursor,y); cursor += doc.getTextWidth(match[0]); last=match.index+match[0].length;
     }
     const tail=line.slice(last);
-    if(tail){doc.setTextColor(...pdfColors.white);doc.text(tail,cursor,y);}
+    if(tail){doc.setTextColor(...palette.foreground);doc.text(tail,cursor,y);}
   }
   async function coverPdf(doc) {
     if (state.coverImage) {
@@ -805,24 +968,24 @@
     doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(41,61,100);
     doc.text(`LAB REPORT - ${state.labReportNumber || '02'}`,center,70,{align:'center'});
     doc.setDrawColor(41,61,100); doc.setLineWidth(.65); doc.line(77,73,133,73);
-    doc.setFont('helvetica','bold'); doc.setFontSize(13.5); doc.setTextColor(16,24,39);
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(16,24,39);
     const titleLines=doc.splitTextToSize(state.reportTitle || REPORT_TOPIC_DEFAULT,160).slice(0,4);
     let y=84;
-    titleLines.forEach(line=>{doc.text(line,center,y,{align:'center'});y+=6.7;});
+    titleLines.forEach(line=>{doc.text(line,center,y,{align:'center'});y+=7.8;});
     y+=4;
-    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(17,24,39);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10.5); doc.setTextColor(17,24,39);
     doc.text(`Course Code: ${state.courseCode || 'CSE222'}`,center,y,{align:'center'}); y+=6.5;
     const courseTitle=doc.splitTextToSize(`Course Title: ${state.courseName || 'Object Oriented Programming Lab'}`,160);
     courseTitle.slice(0,2).forEach(line=>{doc.text(line,center,y,{align:'center'});y+=6.2;});
     y+=4;
-    doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(41,61,100);doc.text('Submitted To',center,y,{align:'center'}); y+=7;
+    doc.setFont('helvetica','bold');doc.setFontSize(13.5);doc.setTextColor(41,61,100);doc.text('Submitted To',center,y,{align:'center'}); y+=7;
     doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(20,27,42);
     const facultyLines=doc.splitTextToSize(state.facultyName || 'Pranto Protim Choudhury (PPC)',158).slice(0,2);
     facultyLines.forEach(line=>{doc.text(line,center,y,{align:'center'});y+=5.5;});
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(50,62,82);
     [state.facultyDesignation || 'Lecturer', state.department || 'Department of CSE', 'Daffodil International University'].forEach(line=>{doc.text(line,center,y,{align:'center'});y+=5;});
-    y+=4; doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(41,61,100);doc.text('Submitted By',center,y,{align:'center'}); y+=8;
-    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(17,24,39);
+    y+=4; doc.setFont('helvetica','bold');doc.setFontSize(13.5);doc.setTextColor(41,61,100);doc.text('Submitted By',center,y,{align:'center'}); y+=8;
+    doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(17,24,39);
     const studentLines=[`Name: ${state.studentName || '—'}`,`ID: ${state.studentId || '—'}`,`Section: ${state.section || '69_'}`,`Semester: ${state.semester || '—'}`,state.department || 'Department of CSE','Daffodil International University'];
     studentLines.forEach(line=>{ const lines=doc.splitTextToSize(line,158).slice(0,2); lines.forEach(part=>{doc.text(part,center,y,{align:'center'});y+=5.2;}); });
     // Calendar icon and submission date badge.
@@ -833,21 +996,25 @@
     doc.setTextColor(41,61,100);doc.text(dateText,center+3,pillY+7.6,{align:'center'});
   }
   function addDocumentHeader(doc, p, continuation=false) {
-    const m=16, w=178;
-    doc.setFillColor(17,27,43); doc.roundedRect(m,11,w,11,2,2,'F');
-    doc.setFont(codePdfFont(p.codeFontFamily || 'Monospace'),'normal');doc.setFontSize(9);doc.setTextColor(242,246,255);
-    doc.text(p.filename || 'Main.java',m+5,18.1);
-    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(155,171,255);doc.text(continuation?'CONTINUED':'JAVA SOURCE',m+w-5,18.0,{align:'right'});
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(23,34,55);
+    const m=18, w=174, dark=p.pdfDarkTheme !== false, palette=getPdfPalette(dark);
     const problem = continuation ? `${p.heading || 'Problem 1'} · continued` : (p.heading || 'Problem 1');
-    const problemLines=doc.splitTextToSize(problem,w);
-    doc.text(problemLines.slice(0,1),m,31);
-    doc.setDrawColor(229,233,241);doc.setLineWidth(.3);doc.line(m,36,m+w,36);
-    return 44;
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(23,34,55);
+    const problemLines = doc.splitTextToSize(problem,w-8);
+    doc.text(problemLines,m+4,15);
+    const dividerY = 15 + problemLines.length * 4.8 + 1.5;
+    doc.setDrawColor(229,233,241); doc.setLineWidth(.3); doc.line(m,dividerY,m+w,dividerY);
+    const barY = dividerY + 4;
+    doc.setFillColor(...palette.headerBg); doc.setDrawColor(...palette.border); doc.setLineWidth(.22); doc.roundedRect(m,barY,w,10,2,2,'FD');
+    doc.setFont(codePdfFont(p.codeFontFamily || 'Monospace'),'normal'); doc.setFontSize(9); doc.setTextColor(...palette.headerText);
+    doc.text(p.filename || 'Main.java',m+6,barY+6.3);
+    doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(...palette.tag);
+    doc.text(continuation?'CONTINUED':'JAVA SOURCE',m+w-6,barY+6.3,{align:'right'});
+    return barY + 14;
   }
-  function drawCodePanelStart(doc, y) {
-    doc.setFillColor(...pdfColors.bg); doc.roundedRect(16,y,178,10,2,2,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(148,164,188);doc.text('SOURCE CODE',21,y+6.5);
+  function drawCodePanelStart(doc, y, dark=true) {
+    const palette=getPdfPalette(dark);
+    doc.setFillColor(...palette.bg); doc.setDrawColor(...palette.border); doc.setLineWidth(.22); doc.roundedRect(16,y,178,10,2,2,'FD');
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(...palette.gutter);doc.text('SOURCE CODE',22,y+6.5);
     return y+15;
   }
   function drawTextPage(doc, p, displayNumber) {
@@ -868,35 +1035,64 @@
     }
   }
   function drawCodePage(doc,p,displayNumber){
-    doc.addPage(); let y=addDocumentHeader(doc,p,false);
-    if(p.intro){ y=pdfText(doc,p.intro,16,y,178,9,[93,107,130],4.7); y+=5; }
-    y=drawCodePanelStart(doc,y);
-    const code=String(p.code||''); const rawLines=code.split('\n');
+    doc.addPage();
+    const dark=p.pdfDarkTheme !== false;
+    const palette=getPdfPalette(dark);
+    let y=addDocumentHeader(doc,p,false);
+    if(p.intro){
+      const introLines=doc.splitTextToSize(String(p.intro),170);
+      if(y + introLines.length*4.7 + 20 > 273){doc.addPage();y=addDocumentHeader(doc,p,true);}
+      y=pdfText(doc,p.intro,20,y,170,9,[93,107,130],4.7); y+=5;
+    }
+    y=drawCodePanelStart(doc,y,dark);
+    const rawLines=String(p.code||'').split('\n');
     const fontFamily=p.codeFontFamily || 'Monospace';
     const fontSize=Math.max(6,Math.min(12,Number(p.codeFontSize)||10));
-    const lineH=Math.max(3.5,fontSize*.58); const startX=29; const bottom=273;
-    const maxCols=Math.max(38,Math.floor(90*(8/fontSize)*(fontFamily==='Sans serif'?.85:1)));
-    let shownLine=0;
+    const lineH=Math.max(4.1,fontSize*.60);
+    const maxCols=codePaginationStats(p).maxCols;
+    const rows=[];
     for(let li=0;li<rawLines.length;li++){
-      let line=rawLines[li].replace(/\t/g,'    ');
+      const line=rawLines[li].replace(/\t/g,'    ');
       const chunks=[];
-      if(line.length===0) chunks.push(''); else for(let i=0;i<line.length;i+=maxCols) chunks.push(line.slice(i,i+maxCols));
-      for(let ci=0;ci<chunks.length;ci++){
-        if(y+lineH>bottom){doc.addPage();y=addDocumentHeader(doc,p,true);y=drawCodePanelStart(doc,y);}
-        const shade=(shownLine%2===0)?[17,27,43]:[19,31,49];
-        doc.setFillColor(...shade);doc.rect(16,y-3.4,178,lineH,'F');
-        doc.setFont('courier','normal');doc.setFontSize(Math.max(7.2,fontSize*.78));doc.setTextColor(116,131,153);
-        doc.text(ci===0?String(li+1).padStart(2,' '):'↳',23,y-.4);
-        drawHighlightedCodeLine(doc,chunks[ci],startX,y-.4,fontSize,fontFamily);y+=lineH;shownLine++;
+      if(line.length===0) chunks.push('');
+      else for(let i=0;i<line.length;i+=maxCols) chunks.push(line.slice(i,i+maxCols));
+      chunks.forEach((chunk,ci)=>rows.push({text:chunk,lineNumber:li+1,continuation:ci>0}));
+    }
+    let cursor=0;
+    const bottom=273;
+    while(cursor<rows.length){
+      const capacity=Math.max(1,Math.floor((bottom-y+2)/lineH));
+      const pageRows=rows.slice(cursor,cursor+capacity);
+      const panelX=16, panelW=178, panelTop=y-3.5, panelH=pageRows.length*lineH+1.4;
+      doc.setFillColor(...palette.bg);doc.setDrawColor(...palette.border);doc.setLineWidth(.22);doc.roundedRect(panelX,panelTop,panelW,panelH,2,2,'FD');
+      pageRows.forEach((item,ri)=>{
+        const rowY=y+ri*lineH;
+        if(ri%2===1){doc.setFillColor(...palette.rowB);doc.rect(panelX+1.0,rowY-3.1,panelW-2.0,lineH,'F');}
+        doc.setFont(codePdfFont(fontFamily),'normal');doc.setFontSize(Math.max(6.5,fontSize*.78));doc.setTextColor(...palette.gutter);
+        doc.text(item.continuation?'↳':String(item.lineNumber).padStart(2,' '),24.5,rowY-.35);
+        doc.setDrawColor(...palette.border);doc.setLineWidth(.15);doc.line(29.5,rowY-3.0,29.5,rowY+lineH-3.4);
+        drawHighlightedCodeLine(doc,item.text,33,rowY-.35,fontSize,fontFamily,dark);
+      });
+      y+=pageRows.length*lineH+4;
+      cursor+=pageRows.length;
+      if(cursor<rows.length){
+        doc.addPage();
+        y=addDocumentHeader(doc,p,true);
+        y=drawCodePanelStart(doc,y,dark);
       }
     }
-    y+=6;
     if(p.notes){
       const noteTitle='NOTES / EXPLANATION';
-      if(y>254){doc.addPage();y=25;doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(123,136,158);doc.text(`${p.filename || 'JAVA SOURCE'}  /  NOTES`,16,y);y+=15;}
-      doc.setFillColor(238,240,255);doc.roundedRect(16,y,2,Math.min(35,10+String(p.notes).split('\n').length*4.8),1,1,'F');
-      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(91,101,204);doc.text(noteTitle,22,y+5);y+=11;
-      y=pdfText(doc,p.notes,22,y,170,8.5,[83,96,118],4.7);
+      const noteParagraphs=String(p.notes).split('\n');
+      let noteLines=0;noteParagraphs.forEach(part=>{noteLines+=part?doc.splitTextToSize(part,170).length:1;});
+      const noteHeight=15+noteLines*4.7+Math.max(0,noteParagraphs.length-1)*1.6;
+      if(y+noteHeight>273){
+        doc.addPage();y=addDocumentHeader(doc,p,true)+3;
+        doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(123,136,158);doc.text(`${p.filename||'JAVA SOURCE'}  /  NOTES`,18,y);y+=10;
+      }
+      doc.setFillColor(238,240,255);doc.roundedRect(18,y,2,Math.min(35,10+noteLines*4.8),1,1,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(91,101,204);doc.text(noteTitle,24,y+5);y+=11;
+      y=pdfText(doc,p.notes,24,y,168,8.5,[83,96,118],4.7);
     }
   }
   function preparePrintReport() {
@@ -913,7 +1109,7 @@
       if(p.type==='code'){
         const cssFamily = p.codeFontFamily==='Sans serif' ? 'Arial,Helvetica,sans-serif' : p.codeFontFamily==='Serif' ? 'Georgia,serif' : 'monospace';
         sheet.style.setProperty('--print-code-font',cssFamily); sheet.style.setProperty('--print-code-size',`${Math.max(6,Math.min(12,Number(p.codeFontSize)||10))}pt`);
-        sheet.innerHTML=`<div class="print-filebar">${escapeHtml(p.filename||'Main.java')}</div><h2 class="print-problem-heading">${escapeHtml(p.heading||'Problem 1')}</h2>${p.intro?`<p class="print-intro">${escapeHtml(p.intro)}</p>`:''}<pre class="print-code">${previewCode(p.code||'')}</pre>${p.notes?`<div class="print-notes">${escapeHtml(p.notes)}</div>`:''}<div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
+        sheet.innerHTML=`<h2 class="print-problem-heading">${escapeHtml(p.heading||'Problem 1')}</h2><div class="print-filebar">${escapeHtml(p.filename||'Main.java')}</div>${p.intro?`<p class="print-intro">${escapeHtml(p.intro)}</p>`:''}<pre class="print-code ${p.pdfDarkTheme !== false ? 'theme-dark' : 'theme-light'}">${previewCode(p.code||'')}</pre>${p.notes?`<div class="print-notes">${escapeHtml(p.notes)}</div>`:''}<div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
       } else {
         sheet.innerHTML=`<div class="print-kicker">LAB REPORT - ${escapeHtml(state.labReportNumber||'02')}</div><h2>${escapeHtml(p.heading||'Untitled page')}</h2><div style="width:30mm;height:1mm;background:#293d64;margin:0 0 10mm"></div><div class="print-text-body">${escapeHtml(p.body||'')}</div><div class="print-footer"><span>DAFFODIL INTERNATIONAL UNIVERSITY</span><span>${index+1}</span></div>`;
       }

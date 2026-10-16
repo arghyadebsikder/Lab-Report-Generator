@@ -1,41 +1,28 @@
-# DIU Java Lab Report Studio
+# Java Lab Report Studio
 
-A browser-based editor for assembling Java programming assignments and lab reports into a polished A4 PDF.
-
-## Features
-
-- DIU-inspired white cover page based on the provided sample, with the university wordmark, faint crest watermark, and a thin page border.
-- Default cover heading: **Lab Report - 02**.
-- Default report topic: **Summer -26 & Fall - 25 OOP Mid Term Question Solution Using JAVA**. The report number and title are editable; the cover does not use an “Experiment Name” label.
-- Default course title **Object Oriented Programming Lab**, course code **CSE222**, and section **69_**.
-- Submission date field with a native calendar picker and a calendar icon beside the date on the designed cover.
-- Optional upload of an existing cover page (PNG, JPG, or WebP).
-- Java source pages with an editable problem heading and filename. Every new code page starts as `Main.java` and **Problem 1**, then increments for additional code pages.
-- Colorful Java syntax highlighting in the editor, page preview, and exported output, including keywords, types, strings, comments, numbers, methods, annotations, constants, and operators.
-- Adjustable code font family (Monospace, Sans serif, Serif) and font size (6–12 pt), with a default of **10 pt**.
-- Separate text pages for algorithms, discussions, output explanations, and conclusions.
-- Page selection, move up/down, duplicate, and delete controls. The cover remains fixed as page one.
-- Live A4 preview and browser-local autosave when browser storage is available.
+A single-page, browser-based editor for preparing Daffodil International University Java lab reports and exporting them as PDFs.
 
 ## Open locally
 
-1. Extract the ZIP archive.
+1. Download and extract the project ZIP.
 2. Open `index.html` in Chrome or Edge.
-3. Edit the cover details, paste Java source code, and add, move, duplicate, or delete pages.
-4. Select **Export PDF**.
+3. Fill in the cover details or upload an existing cover page.
+4. Add code and text pages. New pages are appended at the end of the document.
+5. Export your finished report using **Export PDF**.
 
-The DIU wordmark and watermark are embedded in `index.html`, so the website preview does not depend on image files. The `assets/` folder keeps the original logo artwork used to build the cover design.
+## Features
 
-The PDF export library is loaded from a CDN, so an internet connection is needed for the direct **Export PDF** button. If the browser blocks local storage for a `file://` page, the top status will show **Autosave unavailable**; your current edits still work, but export a PDF before closing the tab. For browser autosave, open the folder with a local web server (such as VS Code Live Server) or deploy it to Vercel.
+- DIU-styled cover page with editable report number, report title, course and student details, plus a submission-date field.
+- Java source pages with syntax highlighting, an editable problem heading and file name, adjustable font family and font size, and dark/light editor themes.
+- Long source code is automatically split over multiple PDF pages with rounded, padded code panels. The live preview remains a single A4 page and displays the estimated PDF page count.
+- Page list shows the problem heading and Java file name; pages can be reordered, duplicated, or deleted.
+- Separate text pages for algorithms, discussion, conclusions, and other written sections.
+- Independent PDF code appearance toggle: enable dark code panels for screen-friendly reports or disable it for a light, printer-friendly PDF. Syntax colors keep readable contrast in both modes.
+- Automatic saving to the current browser's local storage.
+- Footer credit: “Made with ❤️ by Arghya”.
 
-## Deploy to Vercel
+## PDF export
 
-1. Upload the contents of this project folder to a GitHub repository.
-2. Import the repository into Vercel.
-3. Choose the static/Other framework preset, with no build command and no output directory required.
-4. Deploy. The entry point is `index.html`.
+The export button uses jsPDF loaded from a CDN, so an internet connection is recommended. If the library is unavailable, the site opens the browser print dialog; choose **Save as PDF**.
 
-## Notes
-
-- Autosaved report data remains in the current browser only; it does not automatically sync between computers or browsers.
-- Inspect the exported PDF before submitting, especially if the code contains very long lines or the report uses many pages.
+All report data is stored in the local browser unless you upload or deploy the website elsewhere. Export a PDF backup before clearing browser storage.
